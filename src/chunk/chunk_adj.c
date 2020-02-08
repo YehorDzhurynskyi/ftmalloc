@@ -23,5 +23,5 @@ t_mem_chunk	*chunk_adj_next(const t_mem_chunk *chunk)
 {
 	FTMALLOC_ASSERT(chunk != NULL);
 	return ((t_mem_chunk*)((t_byte*)chunk +
-	FTMALLOC_MEM_CHUNK_SZ + _chunk_size_get(chunk)));
+	FTMALLOC_MEM_CHUNK_SZ + chunk_size_get(chunk)));
 }

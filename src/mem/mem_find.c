@@ -17,14 +17,14 @@ static size_t	check_bucket_overflow(t_mem *mem, const size_t size)
 	size_t oldsize;
 	size_t newsize;
 
-	oldsize = _chunk_size_get(mem->chunk);
+	oldsize = chunk_size_get(mem->chunk);
 	newsize = size - FTMALLOC_MEM_CHUNK_SZ;
-	if (oldsize != newsize && !_chunk_is_splittable(oldsize, newsize))
+	if (oldsize != newsize && !chunk_is_splittable(oldsize, newsize))
 	{
 		FTMALLOC_ASSERT(oldsize - newsize == FTMALLOC_MEM_MIN_PAYLOAD_SZ);
-		if (oldsize + FTMALLOC_MEM_CHUNK_SZ > _bin_max_size_of(size))
+		if (oldsize + FTMALLOC_MEM_CHUNK_SZ > bin_max_size_of(size))
 		{
-			return (_reserve_mem(mem, size + FTMALLOC_MEM_CHUNK_SZ));
+			return (mem_reserve(mem, size + FTMALLOC_MEM_CHUNK_SZ));
 		}
 	}
 	return (size);

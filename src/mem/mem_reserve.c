@@ -14,18 +14,18 @@
 
 static void	rebind_freed_links(t_mem *mem, const size_t size)
 {
-	FTMALLOC_ASSERT(!_chunk_in_use_get(mem->chunk));
+	FTMALLOC_ASSERT(!chunk_in_use_get(mem->chunk));
 	if (mem->bin->head == mem->chunk)
 	{
-		FTMALLOC_ASSERT(_chunk_freed_prev_get(mem->bin->head) == NULL);
-		mem->bin->head = _chunk_freed_next_get(mem->bin->head);
+		FTMALLOC_ASSERT(chunk_freed_prev_get(mem->bin->head) == NULL);
+		mem->bin->head = chunk_freed_next_get(mem->bin->head);
 	}
 	if (mem->chunk->freed_prev != NULL)
-		_chunk_freed_next_set(mem->chunk->freed_prev, mem->chunk->freed_next);
+		chunk_freed_next_set(mem->chunk->freed_prev, mem->chunk->freed_next);
 	if (mem->chunk->freed_next != NULL)
-		_chunk_freed_prev_set(mem->chunk->freed_next, mem->chunk->freed_prev);
-	FTMALLOC_DEBUG_ONLY(_chunk_freed_prev_set(mem->chunk, NULL));
-	FTMALLOC_DEBUG_ONLY(_chunk_freed_next_set(mem->chunk, NULL));
+		chunk_freed_prev_set(mem->chunk->freed_next, mem->chunk->freed_prev);
+	FTMALLOC_DEBUG_ONLY(chunk_freed_prev_set(mem->chunk, NULL));
+	FTMALLOC_DEBUG_ONLY(chunk_freed_next_set(mem->chunk, NULL));
 }
 
 size_t		mem_reserve(t_mem *mem, const size_t size)
@@ -41,7 +41,7 @@ size_t		mem_reserve(t_mem *mem, const size_t size)
 			return (0);
 		}
 	}
-	if (!_chunk_is_splittable(_chunk_size_get(mem->chunk),
+	if (!chunk_is_splittable(chunk_size_get(mem->chunk),
 	size - FTMALLOC_MEM_CHUNK_SZ))
 	{
 		rebind_freed_links(mem, size);

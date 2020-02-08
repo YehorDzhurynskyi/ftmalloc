@@ -37,6 +37,9 @@ add_library(malloc STATIC
 	src/realloc/realloc_try_grow.c
 	src/realloc/realloc_try_shrink.c
 
+	src/show_mem/show_mem_chunk.c
+	src/show_mem/show_mem_chunk_ex.c
+
 	include/ftmalloc.h
     src/ftmalloc_internal.h
 )
@@ -76,6 +79,11 @@ if (UNIX)
 	target_link_libraries(malloc
 		PUBLIC
 			ft
+	)
+	
+	target_compile_options(malloc
+		PRIVATE
+			-Wall -Werror -Wunused
 	)
 endif ()
 

@@ -12,7 +12,7 @@
 
 #include "ftmalloc_internal.h"
 
-void	show_mem_chunk(const t_mem_chunk *chunk)
+void	show_mem_chunk(t_mem_chunk *chunk)
 {
 	chunk_verify(chunk);
 	ft_printf("\t\tAddress: %p\n\t\tUser address: %p\n",

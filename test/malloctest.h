@@ -24,18 +24,18 @@ protected:
                 size_t user = 0;
                 size_t available = 0;
 
-                t_mem_chunk* chunk = _bin_adj(bin);
-                while (!_chunk_is_prev_top(chunk))
+                t_mem_chunk* chunk = bin_adj(bin);
+                while (!chunk_is_prev_top(chunk))
                 {
-                    occupied += (_chunk_in_use_get(chunk) ? _chunk_size_get(chunk) : 0) + FTMALLOC_MEM_CHUNK_SZ;
-                    user += _chunk_in_use_get(chunk) ? _chunk_size_get(chunk) : 0;
-                    available += _chunk_in_use_get(chunk) ? 0 : _chunk_size_get(chunk);
+                    occupied += (chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) + FTMALLOC_MEM_CHUNK_SZ;
+                    user += chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0;
+                    available += chunk_in_use_get(chunk) ? 0 : chunk_size_get(chunk);
 
-                    chunk = _chunk_adj_prev(chunk);
+                    chunk = chunk_adj_prev(chunk);
                 }
-                occupied += (_chunk_in_use_get(chunk) ? _chunk_size_get(chunk) : 0) + FTMALLOC_MEM_CHUNK_SZ;
-                user += _chunk_in_use_get(chunk) ? _chunk_size_get(chunk) : 0;
-                available += _chunk_in_use_get(chunk) ? 0 : _chunk_size_get(chunk);
+                occupied += (chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) + FTMALLOC_MEM_CHUNK_SZ;
+                user += chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0;
+                available += chunk_in_use_get(chunk) ? 0 : chunk_size_get(chunk);
 
                 EXPECT_EQ(occupied, bin->mem_allocated);
                 EXPECT_EQ(user, bin->mem_user);

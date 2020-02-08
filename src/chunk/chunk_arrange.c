@@ -20,14 +20,14 @@ t_mem_chunk	*chunk_arrange(t_byte *mem, size_t size, t_bool inuse)
 	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(mem));
 	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(size));
 	chunk = (t_mem_chunk*)mem;
-	_chunk_size_set(chunk, size);
+	chunk_size_set(chunk, size);
 	if (inuse)
 	{
-		_chunk_in_use_set_true(chunk);
+		chunk_in_use_set_true(chunk);
 	}
 	else
 	{
-		_chunk_in_use_set_false(chunk);
+		chunk_in_use_set_false(chunk);
 	}
 	return (chunk);
 }

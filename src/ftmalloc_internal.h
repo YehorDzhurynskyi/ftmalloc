@@ -153,9 +153,9 @@ void		chunk_verify(const t_mem_chunk* chunk);
 /*
 ** SHOW MEM
 */
-typedef void (*t_show_chunk_func)(const t_mem_chunk*);
-void		show_mem_chunk(const t_mem_chunk *chunk);
-void		show_mem_chunk_ex(const t_mem_chunk *chunk);
+typedef void (*t_show_chunk_func)(t_mem_chunk*);
+void		show_mem_chunk(t_mem_chunk *chunk);
+void		show_mem_chunk_ex(t_mem_chunk *chunk);
 
 /*
 ** MEM
@@ -163,6 +163,7 @@ void		show_mem_chunk_ex(const t_mem_chunk *chunk);
 size_t		mem_reserve(t_mem *mem, const size_t size);
 size_t		mem_find(t_mem *mem, const size_t size);
 size_t		mem_allocate(t_mem *mem, const size_t size);
+void		mem_deallocate(t_mem *mem, const size_t size, t_mem_bin *prev_bin);
 
 /*
 ** BIN

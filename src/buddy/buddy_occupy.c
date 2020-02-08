@@ -14,7 +14,7 @@
 
 static void	rebind_freed_links(t_mem *m, t_mem_chunk *next)
 {
-	if (!_chunk_in_use_get(m->chunk))
+	if (!chunk_in_use_get(m->chunk))
 	{
 		chunk_freed_next_set(next, m->chunk->freed_next);
 		chunk_freed_prev_set(next, m->chunk->freed_prev);
@@ -40,9 +40,9 @@ static void	chunk_split(t_mem *m, const size_t s)
 	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(s));
 	FTMALLOC_ASSERT(chunk_size_get(m->chunk) >= s + FTMALLOC_MEM_CHUNK_SZ);
 	osize = chunk_size_get(m->chunk);
-	m->chunk = chunk_arrange(m->chunk, s - FTMALLOC_MEM_CHUNK_SZ,
+	m->chunk = chunk_arrange((t_byte*)m->chunk, s - FTMALLOC_MEM_CHUNK_SZ,
 	chunk_in_use_get(m->chunk));
-	next = chunk_arrange(chunk_adj_next(m->chunk), osize - s, FALSE);
+	next = chunk_arrange((t_byte*)chunk_adj_next(m->chunk), osize - s, FALSE);
 	FTMALLOC_ASSERT(!chunk_in_use_get(next));
 	rebind_freed_links(m, next);
 	m->bin->mem_occupied += FTMALLOC_MEM_CHUNK_SZ;

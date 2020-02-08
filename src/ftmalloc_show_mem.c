@@ -16,7 +16,7 @@ static void	show_bin(const t_mem_bin *bin, t_show_chunk_func show_func)
 {
 	t_mem_chunk *chunk;
 
-	_bin_verify(bin);
+	bin_verify(bin);
 	ft_printf("\t%zu Occupied(%zu User, %zu Bin Header)"
 				" / %zu Available / %zu Total\n",
 				bin->mem_occupied,
@@ -26,7 +26,7 @@ static void	show_bin(const t_mem_bin *bin, t_show_chunk_func show_func)
 				bin->mem_allocated);
 	ft_printf("\tHead: %p\n", bin->head);
 	ft_printf("\tNext Bin: %p\n", bin->next);
-	chunk = _bin_adj(bin);
+	chunk = bin_adj(bin);
 	while (!chunk_is_prev_top(chunk))
 	{
 		show_func(chunk);

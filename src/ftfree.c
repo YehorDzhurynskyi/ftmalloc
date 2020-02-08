@@ -18,12 +18,12 @@ static t_bool	try_bind_with_adj_chunks(t_mem *mem)
 	t_mem_chunk	*merged_next;
 
 	FTMALLOC_ASSERT(!chunk_in_use_get(mem->chunk));
-	merged_prev = chunk_try_merge_prev(mem);
+	merged_prev = buddy_try_merge_prev(mem);
 	FTMALLOC_ASSERT(!chunk_in_use_get(mem->chunk));
 	if (merged_prev)
 		mem->bin->mem_occupied -= FTMALLOC_MEM_CHUNK_SZ;
 	FTMALLOC_ASSERT(!chunk_in_use_get(mem->chunk));
-	merged_next = chunk_try_merge_next(mem);
+	merged_next = buddy_try_merge_next(mem);
 	FTMALLOC_ASSERT(!chunk_in_use_get(mem->chunk));
 	if (merged_next)
 		mem->bin->mem_occupied -= FTMALLOC_MEM_CHUNK_SZ;
@@ -47,15 +47,15 @@ static void		release(t_mem *mem, const size_t size, t_mem_bin *prev_bin)
 	mem->bin->mem_user -= size;
 	mem->bin->mem_occupied -= size;
 	bin_verify(mem->bin);
-	if (!try_bind_with_adj_chunks)
+	if (!try_bind_with_adj_chunks(mem))
 	{
-		buddy_deoccupy(&mem);
+		buddy_deoccupy(mem);
 	}
 	chunk_verify(mem->chunk);
 	bin_verify(mem->bin);
 	if (bin_is_empty(mem->bin))
 	{
-		mem_deallocate(&mem, size, prev_bin);
+		mem_deallocate(mem, size, prev_bin);
 	}
 }
 
@@ -78,8 +78,8 @@ void			ftfree_internal(void *raw)
 	bin_verify(mem.bin);
 	FTMALLOC_ASSERT(mem.bin == chunk_bin_of_slow(mem.chunk));
 	chunk_in_use_set_false(mem.chunk);
-	FTMALLOC_DEBUG_ONLY(_chunk_freed_next_set(mem.chunk, NULL));
-	FTMALLOC_DEBUG_ONLY(_chunk_freed_prev_set(mem.chunk, NULL));
+	FTMALLOC_DEBUG_ONLY(chunk_freed_next_set(mem.chunk, NULL));
+	FTMALLOC_DEBUG_ONLY(chunk_freed_prev_set(mem.chunk, NULL));
 	size = chunk_size_get(mem.chunk);
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.usage_dealloc++);
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_dealloc += size);

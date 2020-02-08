@@ -18,7 +18,7 @@ static void	bind_closest_links(t_mem *mem)
 	t_mem_chunk	*next;
 
 	freed = mem->bin->head;
-	while ((next = _chunk_freed_next_get(freed)) != NULL)
+	while ((next = chunk_freed_next_get(freed)) != NULL)
 	{
 		if (next > mem->chunk)
 		{
@@ -29,14 +29,14 @@ static void	bind_closest_links(t_mem *mem)
 	if (next == NULL)
 	{
 		FTMALLOC_ASSERT(freed->freed_next == NULL);
-		_chunk_freed_prev_set(mem->chunk, freed);
-		_chunk_freed_next_set(mem->chunk, NULL);
+		chunk_freed_prev_set(mem->chunk, freed);
+		chunk_freed_next_set(mem->chunk, NULL);
 	}
 	else
 	{
 		FTMALLOC_ASSERT(next->freed_prev != NULL);
-		_chunk_freed_prev_set(mem->chunk, next->freed_prev);
-		_chunk_freed_next_set(mem->chunk, next);
+		chunk_freed_prev_set(mem->chunk, next->freed_prev);
+		chunk_freed_next_set(mem->chunk, next);
 	}
 }
 

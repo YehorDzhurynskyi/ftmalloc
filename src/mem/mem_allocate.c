@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ftmalloc_internal.h"
+#include <stdlib.h>
 
 static void	fill_with_wildcards(t_byte *raw, const size_t size)
 {
@@ -57,7 +58,7 @@ size_t		mem_allocate(t_mem *mem, const size_t size)
 	t_byte		*raw;
 	size_t		alloc_size;
 
-	alloc_size = _bin_alloc_size_of(size);
+	alloc_size = bin_alloc_size_of(size);
 	raw = mmap(NULL,
 	alloc_size,
 	PROT_READ | PROT_WRITE,

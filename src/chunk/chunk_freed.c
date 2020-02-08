@@ -17,9 +17,9 @@ t_mem_chunk	*chunk_freed_prev_get(const t_mem_chunk *chunk)
 	t_mem_chunk *freed_prev;
 
 	FTMALLOC_ASSERT(chunk != NULL);
-	FTMALLOC_ASSERT(!_chunk_in_use_get(chunk));
+	FTMALLOC_ASSERT(!chunk_in_use_get(chunk));
 	freed_prev = chunk->freed_prev;
-	FTMALLOC_ASSERT(!freed_prev || !_chunk_in_use_get(freed_prev));
+	FTMALLOC_ASSERT(!freed_prev || !chunk_in_use_get(freed_prev));
 	return (freed_prev);
 }
 
@@ -28,9 +28,9 @@ t_mem_chunk	*chunk_freed_next_get(const t_mem_chunk *chunk)
 	t_mem_chunk *freed_next;
 
 	FTMALLOC_ASSERT(chunk != NULL);
-	FTMALLOC_ASSERT(!_chunk_in_use_get(chunk));
+	FTMALLOC_ASSERT(!chunk_in_use_get(chunk));
 	freed_next = chunk->freed_next;
-	FTMALLOC_ASSERT(!freed_next || !_chunk_in_use_get(freed_next));
+	FTMALLOC_ASSERT(!freed_next || !chunk_in_use_get(freed_next));
 	return (freed_next);
 }
 
@@ -38,8 +38,8 @@ void		chunk_freed_prev_set(t_mem_chunk *chunk, t_mem_chunk *freed)
 {
 	FTMALLOC_ASSERT(chunk != NULL);
 	FTMALLOC_ASSERT(chunk != freed);
-	FTMALLOC_ASSERT(!_chunk_in_use_get(chunk));
-	FTMALLOC_ASSERT(!freed || !_chunk_in_use_get(freed));
+	FTMALLOC_ASSERT(!chunk_in_use_get(chunk));
+	FTMALLOC_ASSERT(!freed || !chunk_in_use_get(freed));
 	chunk->freed_prev = freed;
 	if (freed)
 	{
@@ -51,8 +51,8 @@ void		chunk_freed_next_set(t_mem_chunk *chunk, t_mem_chunk *freed)
 {
 	FTMALLOC_ASSERT(chunk != NULL);
 	FTMALLOC_ASSERT(chunk != freed);
-	FTMALLOC_ASSERT(!_chunk_in_use_get(chunk));
-	FTMALLOC_ASSERT(!freed || !_chunk_in_use_get(freed));
+	FTMALLOC_ASSERT(!chunk_in_use_get(chunk));
+	FTMALLOC_ASSERT(!freed || !chunk_in_use_get(freed));
 	chunk->freed_next = freed;
 	if (freed)
 	{

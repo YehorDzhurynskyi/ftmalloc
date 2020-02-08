@@ -32,6 +32,7 @@ static t_mem_bin	*bin_arrange_header(t_byte *mem, size_t size)
 	bottom_chunk = (t_mem_chunk*)((t_byte*)bin - FTMALLOC_MEM_CHUNK_SZ);
 	bottom_chunk->prev_size = payload;
 	bottom_chunk->size = 0;
+	FTMALLOC_ASSERT(chunk_adj_next(bin->head) == bottom_chunk);
 	return (bin);
 }
 
@@ -51,10 +52,9 @@ t_mem_bin			*bin_init(t_byte *mem, size_t size)
 	bin_verify(bin);
 	chunk_verify(bin->head);
 	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(top_chunk));
-	FTMALLOC_ASSERT(bin->head == _bin_adj(bin));
-	FTMALLOC_ASSERT(_chunk_adj_prev(bin->head) == top_chunk);
-	FTMALLOC_ASSERT(_chunk_adj_next(bin->head) == bottom_chunk);
-	FTMALLOC_ASSERT(_chunk_is_prev_top(bin->head));
-	FTMALLOC_ASSERT(_chunk_is_next_bottom(bin->head));
+	FTMALLOC_ASSERT(bin->head == bin_adj(bin));
+	FTMALLOC_ASSERT(chunk_adj_prev(bin->head) == top_chunk);
+	FTMALLOC_ASSERT(chunk_is_prev_top(bin->head));
+	FTMALLOC_ASSERT(chunk_is_next_bottom(bin->head));
 	return (bin);
 }

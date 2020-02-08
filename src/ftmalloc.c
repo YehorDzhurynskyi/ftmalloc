@@ -35,13 +35,14 @@ static t_bool	validate_input(const size_t size)
 	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(FTMALLOC_MEM_MIN_PAYLOAD_SZ));
 	if (size == 0)
 	{
-		return (NULL);
+		return (FALSE);
 	}
 	if (size_request_is_out_of_range(size))
 	{
 		errno = ENOMEM;
-		return (NULL);
+		return (FALSE);
 	}
+	return (TRUE);
 }
 
 void			*ftmalloc_internal(size_t size)

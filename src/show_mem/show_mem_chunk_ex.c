@@ -22,7 +22,7 @@ static void	print_hex_dump(t_byte *raw, size_t size)
 	while (i < size)
 	{
 		b = raw[i++];
-		if (isprint(b))
+		if (ft_isprint(b))
 			ft_printf("%2c", b);
 		else
 			ft_printf("%02x", b);
@@ -36,10 +36,10 @@ static void	print_hex_dump(t_byte *raw, size_t size)
 	}
 }
 
-void		show_mem_chunk_ex(const t_mem_chunk *chunk)
+void		show_mem_chunk_ex(t_mem_chunk *chunk)
 {
-	show_chunk(chunk);
-	if (!_chunk_in_use_get(chunk))
+	show_mem_chunk(chunk);
+	if (!chunk_in_use_get(chunk))
 	{
 		return ;
 	}

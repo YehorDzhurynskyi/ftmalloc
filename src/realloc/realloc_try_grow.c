@@ -69,22 +69,25 @@ static void			do_grow(t_mem *mem, t_mem_chunk *merged, size_t size)
 
 	merged_freed_prev = merged->freed_prev;
 	merged_freed_next = merged->freed_next;
-	FTMALLOC_ASSERT(_chunk_size_get(mem->chunk) >= size);
-	FTMALLOC_ASSERT(_chunk_in_use_get(mem->chunk));
+	FTMALLOC_ASSERT(chunk_size_get(mem->chunk) >= size);
+	FTMALLOC_ASSERT(chunk_in_use_get(mem->chunk));
 	buddy_occupy(mem, size + FTMALLOC_MEM_CHUNK_SZ);
-	local_head = rebind_freed_links(&mem, merged_freed_prev, merged_freed_next);
+	local_head = rebind_freed_links(mem, merged_freed_prev, merged_freed_next);
 	if (mem->bin->head == merged)
 	{
 		mem->bin->head = local_head;
 	}
 }
 
-static void			realloc_grow(t_mem *mem, size_t size, size_t osize)
+static void			realloc_grow(t_mem *mem,
+size_t size,
+size_t osize,
+size_t adjsize)
 {
 	t_mem_chunk	*merged_next;
 	size_t		dsize;
 
-	merged_next = chunk_try_merge_next(&mem);
+	merged_next = buddy_try_merge_next(mem);
 	FTMALLOC_ASSERT(merged_next != NULL);
 	if (merged_next)
 		mem->bin->mem_occupied -= FTMALLOC_MEM_CHUNK_SZ;
@@ -107,19 +110,19 @@ t_bool				realloc_try_grow(t_mem *mem, size_t size, size_t osize)
 	t_mem_chunk	*next;
 	size_t		adjsize;
 
-	if (size + FTMALLOC_MEM_CHUNK_SZ > _bin_max_size_of(osize) ||
-	_chunk_is_next_bottom(mem->chunk))
+	if (size + FTMALLOC_MEM_CHUNK_SZ > bin_max_size_of(osize) ||
+	chunk_is_next_bottom(mem->chunk))
 	{
 		return (FALSE);
 	}
-	next = _chunk_adj_next(mem->chunk);
-	if (!_chunk_in_use_get(next))
+	next = chunk_adj_next(mem->chunk);
+	if (!chunk_in_use_get(next))
 	{
-		adjsize = _chunk_size_get(next);
+		adjsize = chunk_size_get(next);
 		if (osize + FTMALLOC_MEM_CHUNK_SZ + adjsize >= size &&
-		osize + 2 * FTMALLOC_MEM_CHUNK_SZ + adjsize <= _bin_max_size_of(size))
+		osize + 2 * FTMALLOC_MEM_CHUNK_SZ + adjsize <= bin_max_size_of(size))
 		{
-			realloc_grow(mem, size, osize);
+			realloc_grow(mem, size, osize, adjsize);
 			return (TRUE);
 		}
 	}

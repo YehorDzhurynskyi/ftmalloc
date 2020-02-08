@@ -31,7 +31,7 @@ static t_bool	try_satisfy_size(t_byte *raw, size_t size)
 	}
 	else if (size > oldsize)
 	{
-		return (realloc_try_grow());
+		return (realloc_try_grow(&mem, size, oldsize));
 	}
 	else if (size < oldsize)
 	{
@@ -50,8 +50,8 @@ static void		*relocate(void *oldmem, const size_t size)
 	mem = ftmalloc_internal(size);
 	if (mem != NULL)
 	{
-		oldchunk = _chunk_mem2chunk(oldmem);
-		osize = _chunk_size_get(oldchunk);
+		oldchunk = chunk_mem2chunk(oldmem);
+		osize = chunk_size_get(oldchunk);
 		copiedsize = size < osize ? size : osize;
 		ft_memcpy(mem, oldmem, copiedsize);
 		FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc_copied += copiedsize);
