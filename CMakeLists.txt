@@ -3,10 +3,9 @@ cmake_minimum_required(VERSION 3.1)
 project(malloc)
 
 add_library(malloc STATIC
-    src/ftmalloc_malloc.c
-    src/ftmalloc_realloc.c
-    src/ftmalloc_free.c
-    src/reserve_mem.c
+    src/ftmalloc.c
+    src/ftrealloc.c
+    src/ftfree.c
     src/ftmalloc_show_mem.c
 
 	src/bin/bin_adj.c
@@ -30,8 +29,12 @@ add_library(malloc STATIC
 	src/chunk/chunk_size.c
 	src/chunk/chunk_verify.c
 
-    include/ftmalloc.h
+	src/mem/mem_allocate.c
+	src/mem/mem_deallocate.c
+	src/mem/mem_find.c
+	src/mem/mem_reserve.c
 
+    include/ftmalloc.h
     src/ftmalloc_internal.h
 )
 
