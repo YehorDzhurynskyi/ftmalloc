@@ -6,12 +6,22 @@ add_library(malloc STATIC
     src/ftmalloc_malloc.c
     src/ftmalloc_realloc.c
     src/ftmalloc_free.c
-    src/ftmalloc_bin.c
     src/ftmalloc_buddy.c
-    src/ftmalloc_chunk.c
     src/ftmalloc_init.c
     src/ftmalloc_reserve_mem.c
     src/ftmalloc_show_mem.c
+
+    src/bin/ftmalloc_bin.c
+
+	src/chunk/chunk_adj.c
+	src/chunk/chunk_arrange.c
+	src/chunk/chunk_bin_of.c
+	src/chunk/chunk_freed.c
+	src/chunk/chunk_in_use.c
+	src/chunk/chunk_mem.c
+	src/chunk/chunk_prev_in_use.c
+	src/chunk/chunk_size.c
+	src/chunk/chunk_verify.c
 
     include/ftmalloc.h
 
@@ -28,15 +38,15 @@ endif ()
 
 target_include_directories(malloc
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include
+	PRIVATE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 )
 
 target_compile_definitions(malloc
     PUBLIC
-        FTMALLOC_THREADSAFE
+		FTMALLOC_THREADSAFE
+		FTMALLOC_DEBUG
 )
 
 set_target_properties(malloc
@@ -89,6 +99,11 @@ add_executable(malloctest
     test/realloc.cpp
     test/mt.cpp
     test/mt_realloc.cpp
+)
+
+target_include_directories(malloctest
+	PRIVATE
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
 )
 
 target_link_libraries(malloctest PUBLIC malloc gtest)

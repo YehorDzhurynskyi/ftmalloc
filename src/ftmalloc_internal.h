@@ -90,19 +90,19 @@ struct s_mem_chunk
 typedef struct s_mem_bin t_mem_bin;
 struct s_mem_bin
 {
-    t_mem_chunk *head;
-    t_mem_bin   *next;
+	t_mem_chunk *head;
+	t_mem_bin   *next;
 
-    size_t      mem_user;
-    size_t      mem_occupied;
-    size_t      mem_allocated;
+	size_t      mem_user;
+	size_t      mem_occupied;
+	size_t      mem_allocated;
 };
 
 typedef struct s_mem t_mem;
 struct s_mem
 {
-    t_mem_chunk *chunk;
-    t_mem_bin   *bin;
+	t_mem_chunk *chunk;
+	t_mem_bin   *bin;
 };
 
 struct s_ftmalloc_state
@@ -112,14 +112,14 @@ struct s_ftmalloc_state
 	t_mem_bin		*bin_list_large;
 
 # ifdef FTMALLOC_DEBUG
-    int	    		usage_alloc;
-    int 			usage_dealloc;
-    int             usage_realloc;
-    int             total_realloc_hits;
-    int	    		total_mmap;
-    int 			total_munmap;
-    size_t			total_alloc;
-    size_t			total_alloc_copied;
+	int	    		usage_alloc;
+	int 			usage_dealloc;
+	int             usage_realloc;
+	int             total_realloc_hits;
+	int	    		total_mmap;
+	int 			total_munmap;
+	size_t			total_alloc;
+	size_t			total_alloc_copied;
 	size_t			total_dealloc;
 # endif
 };
@@ -146,9 +146,9 @@ void	ftfree_internal(void *mem);
 /*
 ** DEBUG
 */
-void    _ftmalloc_verify_freed_links();
-void    _bin_verify(const t_mem_bin* bin);
-void    _chunk_verify(const t_mem_chunk* chunk);
+void    bin_verify_freed_links();
+void    bin_verify(const t_mem_bin* bin);
+void    chunk_verify(const t_mem_chunk* chunk);
 
 /*
 ** RESERVE
@@ -156,64 +156,61 @@ void    _chunk_verify(const t_mem_chunk* chunk);
 size_t       _reserve_mem(t_mem *mem, const size_t size);
 
 /*
-** INIT
-*/
-t_mem_bin	*_init_mem_bin(t_byte *mem, size_t size);
-
-/*
 ** BIN
 */
-t_bool      _bin_is_empty(const t_mem_bin *bin);
+t_mem_bin	*bin_init_mem(t_byte *mem, size_t size);
 
-t_byte		*_bin_bin2mem(t_mem_bin* bin);
+t_bool      bin_is_empty(const t_mem_bin *bin);
 
-t_mem_bin	*_bin_list_of(size_t size);
-size_t		_bin_alloc_size_of(size_t size);
-size_t      _bin_max_size_of(size_t size);
+t_byte		*bin_bin2mem(t_mem_bin* bin);
 
-t_mem_chunk *_bin_adj(const t_mem_bin *bin);
+t_mem_bin	*bin_list_of(size_t size);
+size_t		bin_alloc_size_of(size_t size);
+size_t      bin_max_size_of(size_t size);
+
+t_mem_chunk *bin_adj(const t_mem_bin *bin);
 
 /*
 ** BUDDY
 */
-void        _chunk_occupy(t_mem *mem, const size_t size);
-void        _chunk_deoccupy(t_mem* mem);
-t_mem_chunk *_chunk_try_merge_next(t_mem *mem);
-t_mem_chunk *_chunk_try_merge_prev(t_mem *mem);
+void        chunk_occupy(t_mem *mem, const size_t size);
+void        chunk_deoccupy(t_mem* mem);
+t_mem_chunk *chunk_try_merge_next(t_mem *mem);
+t_mem_chunk *chunk_try_merge_prev(t_mem *mem);
 
 /*
 ** MEM CHUNK
 */
-t_mem_chunk	*_chunk_arrange(t_byte *mem, size_t size, t_bool inuse);
+t_mem_chunk	*chunk_arrange(t_byte *mem, size_t size, t_bool inuse);
 
-t_mem_bin   *_chunk_bin_of(const t_mem_chunk *chunk, t_mem_bin **prev_bin);
-t_mem_bin   *_chunk_bin_of_slow(const t_mem_chunk *chunk);
+t_mem_bin   *chunk_bin_of(const t_mem_chunk *chunk, t_mem_bin **prev_bin);
+t_mem_bin   *chunk_bin_of_slow(const t_mem_chunk *chunk);
 
-t_bool      _chunk_is_splittable(const size_t oldsize, const size_t newsize);
+t_bool      chunk_is_splittable(const size_t oldsize, const size_t newsize);
 
-t_bool		_chunk_is_prev_top(const t_mem_chunk* chunk);
-t_bool		_chunk_is_next_bottom(const t_mem_chunk* chunk);
+t_bool		chunk_is_prev_top(const t_mem_chunk* chunk);
+t_bool		chunk_is_next_bottom(const t_mem_chunk* chunk);
 
-t_byte		*_chunk_chunk2mem(t_mem_chunk* chunk);
-t_mem_chunk	*_chunk_mem2chunk(t_byte* mem);
+t_byte		*chunk_chunk2mem(t_mem_chunk* chunk);
+t_mem_chunk	*chunk_mem2chunk(t_byte* mem);
 
-void		_chunk_prev_in_use_set_true(t_mem_chunk* chunk);
-void		_chunk_prev_in_use_set_false(t_mem_chunk* chunk);
-t_bool 		_chunk_prev_in_use_get(const t_mem_chunk* chunk);
+void		chunk_prev_in_use_set_true(t_mem_chunk* chunk);
+void		chunk_prev_in_use_set_false(t_mem_chunk* chunk);
+t_bool 		chunk_prev_in_use_get(const t_mem_chunk* chunk);
 
-void		_chunk_in_use_set_true(t_mem_chunk* chunk);
-void		_chunk_in_use_set_false(t_mem_chunk* chunk);
-t_bool		_chunk_in_use_get(const t_mem_chunk* chunk);
+void		chunk_in_use_set_true(t_mem_chunk* chunk);
+void		chunk_in_use_set_false(t_mem_chunk* chunk);
+t_bool		chunk_in_use_get(const t_mem_chunk* chunk);
 
-void		_chunk_size_set(t_mem_chunk* chunk, size_t size);
-size_t		_chunk_size_get(const t_mem_chunk* chunk);
+void		chunk_size_set(t_mem_chunk* chunk, size_t size);
+size_t		chunk_size_get(const t_mem_chunk* chunk);
 
-t_mem_chunk	*_chunk_adj_prev(const t_mem_chunk* chunk);
-t_mem_chunk	*_chunk_adj_next(const t_mem_chunk* chunk);
+t_mem_chunk	*chunk_adj_prev(const t_mem_chunk* chunk);
+t_mem_chunk	*chunk_adj_next(const t_mem_chunk* chunk);
 
-t_mem_chunk	*_chunk_freed_prev_get(const t_mem_chunk* chunk);
-void		_chunk_freed_prev_set(t_mem_chunk *chunk, t_mem_chunk *freed);
-t_mem_chunk	*_chunk_freed_next_get(const t_mem_chunk* chunk);
-void		_chunk_freed_next_set(t_mem_chunk *chunk, t_mem_chunk *freed);
+t_mem_chunk	*chunk_freed_prev_get(const t_mem_chunk* chunk);
+void		chunk_freed_prev_set(t_mem_chunk *chunk, t_mem_chunk *freed);
+t_mem_chunk	*chunk_freed_next_get(const t_mem_chunk* chunk);
+void		chunk_freed_next_set(t_mem_chunk *chunk, t_mem_chunk *freed);
 
 #endif
