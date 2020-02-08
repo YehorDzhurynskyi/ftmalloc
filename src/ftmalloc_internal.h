@@ -146,9 +146,16 @@ void		ftfree_internal(void *mem);
 /*
 ** DEBUG
 */
-void    	bin_verify_freed_links();
-void    	bin_verify(const t_mem_bin* bin);
-void    	chunk_verify(const t_mem_chunk* chunk);
+void		bin_verify_freed_links();
+void		bin_verify(const t_mem_bin* bin);
+void		chunk_verify(const t_mem_chunk* chunk);
+
+/*
+** SHOW MEM
+*/
+typedef void (*t_show_chunk_func)(const t_mem_chunk*);
+void		show_mem_chunk(const t_mem_chunk *chunk);
+void		show_mem_chunk_ex(const t_mem_chunk *chunk);
 
 /*
 ** MEM
