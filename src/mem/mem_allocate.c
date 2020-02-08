@@ -13,17 +13,6 @@
 #include "ftmalloc_internal.h"
 #include <stdlib.h>
 
-static void	fill_with_wildcards(t_byte *raw, const size_t size)
-{
-	int i;
-
-	i = 0;
-	while (i < size)
-	{
-		raw[i++] = (char)(rand() % 256);
-	}
-}
-
 static void	bind_to_list(t_mem_bin *bin, const size_t size)
 {
 	t_mem_bin	*bin_list;
@@ -70,7 +59,6 @@ size_t		mem_allocate(t_mem *mem, const size_t size)
 		return (0);
 	}
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_mmap++);
-	FTMALLOC_DEBUG_ONLY(fill_with_wildcards(raw, alloc_size));
 	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(raw));
 	bin = bin_init(raw, alloc_size);
 	bind_to_list(bin, size);

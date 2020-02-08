@@ -68,6 +68,7 @@ void			*ftmalloc_internal(size_t size)
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.usage_alloc++);
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc +=
 	chunk_size_get(mem.chunk));
+	ft_memset(chunk_chunk2mem(mem.chunk), 0xfa, chunk_size_get(mem.chunk));
 	FTMALLOC_ASSERT(mem.bin == chunk_bin_of(mem.chunk, NULL) &&
 	mem.bin == chunk_bin_of_slow(mem.chunk));
 	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(chunk_chunk2mem(mem.chunk)));

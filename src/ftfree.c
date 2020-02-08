@@ -57,6 +57,10 @@ static void		release(t_mem *mem, const size_t size, t_mem_bin *prev_bin)
 	{
 		mem_deallocate(mem, size, prev_bin);
 	}
+	else
+	{
+		ft_memset((t_byte*)chunk_chunk2mem(mem->chunk) + FTMALLOC_MEM_MIN_PAYLOAD_SZ, 0xfd, chunk_size_get(mem->chunk) - FTMALLOC_MEM_MIN_PAYLOAD_SZ);
+	}
 }
 
 void			ftfree_internal(void *raw)
