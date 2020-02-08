@@ -35,7 +35,7 @@ static t_mem_bin	*bin_arrange_header(t_byte *mem, size_t size)
 	return (bin);
 }
 
-t_mem_bin			*bin_init_mem(t_byte *mem, size_t size)
+t_mem_bin			*bin_init(t_byte *mem, size_t size)
 {
 	t_mem_bin	*bin;
 	t_mem_chunk	*top_chunk;

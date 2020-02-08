@@ -139,26 +139,28 @@ extern pthread_mutex_t g_ftmalloc_mutex;
 /*
 ** INTERNAL GENERAL PURPOSE ALLOCATORS
 */
-void	*ftmalloc_internal(size_t size);
-void	*ftrealloc_internal(void *mem, size_t size);
-void	ftfree_internal(void *mem);
+void		*ftmalloc_internal(size_t size);
+void		*ftrealloc_internal(void *mem, size_t size);
+void		ftfree_internal(void *mem);
 
 /*
 ** DEBUG
 */
-void    bin_verify_freed_links();
-void    bin_verify(const t_mem_bin* bin);
-void    chunk_verify(const t_mem_chunk* chunk);
+void    	bin_verify_freed_links();
+void    	bin_verify(const t_mem_bin* bin);
+void    	chunk_verify(const t_mem_chunk* chunk);
 
 /*
-** RESERVE
+** MEM
 */
-size_t       _reserve_mem(t_mem *mem, const size_t size);
+size_t		mem_reserve(t_mem *mem, const size_t size);
+size_t		mem_find(t_mem *mem, const size_t size);
+size_t		mem_allocate(t_mem *mem, const size_t size);
 
 /*
 ** BIN
 */
-t_mem_bin	*bin_init_mem(t_byte *mem, size_t size);
+t_mem_bin	*bin_init(t_byte *mem, size_t size);
 
 t_bool      bin_is_empty(const t_mem_bin *bin);
 
@@ -173,10 +175,10 @@ t_mem_chunk *bin_adj(const t_mem_bin *bin);
 /*
 ** BUDDY
 */
-void        chunk_occupy(t_mem *mem, const size_t size);
-void        chunk_deoccupy(t_mem* mem);
-t_mem_chunk *chunk_try_merge_next(t_mem *mem);
-t_mem_chunk *chunk_try_merge_prev(t_mem *mem);
+void        buddy_occupy(t_mem *mem, const size_t size);
+void        buddy_deoccupy(t_mem* mem);
+t_mem_chunk *buddy_try_merge_next(t_mem *mem);
+t_mem_chunk *buddy_try_merge_prev(t_mem *mem);
 
 /*
 ** MEM CHUNK

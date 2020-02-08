@@ -6,12 +6,19 @@ add_library(malloc STATIC
     src/ftmalloc_malloc.c
     src/ftmalloc_realloc.c
     src/ftmalloc_free.c
-    src/ftmalloc_buddy.c
-    src/ftmalloc_init.c
-    src/ftmalloc_reserve_mem.c
+    src/reserve_mem.c
     src/ftmalloc_show_mem.c
 
-    src/bin/ftmalloc_bin.c
+	src/bin/bin_adj.c
+	src/bin/bin_init.c
+	src/bin/bin_mem.c
+	src/bin/bin_of.c
+	src/bin/bin_verify_freed_links.c
+	src/bin/bin_verify.c
+
+	src/buddy/buddy_deoccupy.c
+	src/buddy/buddy_merge.c
+	src/buddy/buddy_occupy.c
 
 	src/chunk/chunk_adj.c
 	src/chunk/chunk_arrange.c
