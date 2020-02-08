@@ -34,7 +34,10 @@ add_library(malloc STATIC
 	src/mem/mem_find.c
 	src/mem/mem_reserve.c
 
-    include/ftmalloc.h
+	src/realloc/realloc_try_grow.c
+	src/realloc/realloc_try_shrink.c
+
+	include/ftmalloc.h
     src/ftmalloc_internal.h
 )
 

@@ -181,7 +181,7 @@ t_mem_chunk *buddy_try_merge_next(t_mem *mem);
 t_mem_chunk *buddy_try_merge_prev(t_mem *mem);
 
 /*
-** MEM CHUNK
+** CHUNK
 */
 t_mem_chunk	*chunk_arrange(t_byte *mem, size_t size, t_bool inuse);
 
@@ -214,5 +214,11 @@ t_mem_chunk	*chunk_freed_prev_get(const t_mem_chunk* chunk);
 void		chunk_freed_prev_set(t_mem_chunk *chunk, t_mem_chunk *freed);
 t_mem_chunk	*chunk_freed_next_get(const t_mem_chunk* chunk);
 void		chunk_freed_next_set(t_mem_chunk *chunk, t_mem_chunk *freed);
+
+/*
+** REALLOC
+*/
+t_bool		realloc_try_grow(t_mem *mem, size_t size, size_t osize);
+t_bool		realloc_try_shrink(t_mem *mem, size_t size, size_t osize);
 
 #endif
