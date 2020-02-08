@@ -24,8 +24,8 @@ static void	rebind_freed_links(t_mem *mem, const size_t size)
 		chunk_freed_next_set(mem->chunk->freed_prev, mem->chunk->freed_next);
 	if (mem->chunk->freed_next != NULL)
 		chunk_freed_prev_set(mem->chunk->freed_next, mem->chunk->freed_prev);
-	FTMALLOC_DEBUG_ONLY(chunk_freed_prev_set(mem->chunk, NULL));
-	FTMALLOC_DEBUG_ONLY(chunk_freed_next_set(mem->chunk, NULL));
+	chunk_freed_prev_set(mem->chunk, NULL);
+	chunk_freed_next_set(mem->chunk, NULL);
 }
 
 size_t		mem_reserve(t_mem *mem, const size_t size)

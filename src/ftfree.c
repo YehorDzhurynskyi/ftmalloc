@@ -78,8 +78,8 @@ void			ftfree_internal(void *raw)
 	bin_verify(mem.bin);
 	FTMALLOC_ASSERT(mem.bin == chunk_bin_of_slow(mem.chunk));
 	chunk_in_use_set_false(mem.chunk);
-	FTMALLOC_DEBUG_ONLY(chunk_freed_next_set(mem.chunk, NULL));
-	FTMALLOC_DEBUG_ONLY(chunk_freed_prev_set(mem.chunk, NULL));
+	chunk_freed_next_set(mem.chunk, NULL);
+	chunk_freed_prev_set(mem.chunk, NULL);
 	size = chunk_size_get(mem.chunk);
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.usage_dealloc++);
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_dealloc += size);
