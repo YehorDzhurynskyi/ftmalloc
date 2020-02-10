@@ -4,6 +4,13 @@ extern "C"
 #include "ftmalloc.h"
 }
 
+#ifdef FTMALLOC_POSIX_API
+# define ftmalloc malloc
+# define ftcalloc calloc
+# define ftrealloc realloc
+# define ftfree free
+#endif // FTMALLOC_POSIX_API
+
 #include "gtest/gtest.h"
 
 class FTMallocTest : public ::testing::Test
