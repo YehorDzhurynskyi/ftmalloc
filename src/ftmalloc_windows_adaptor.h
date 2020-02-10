@@ -13,6 +13,7 @@ int     slwait(int *sl);
 int     slrelease(int *sl);
 int     setenv(const char *name, const char *value, int overwrite);
 int     unsetenv(const char *name);
+void    ft_putendl_fd(char const *s, int fd);
 
 typedef int t_bool;
 typedef unsigned char t_byte;

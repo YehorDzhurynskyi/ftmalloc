@@ -140,4 +140,16 @@ int     unsetenv(const char *name)
     _putenv_s(name, "");
 }
 
+void    ft_putendl_fd(char const *s, int fd)
+{
+    if (fd == 1)
+    {
+        printf("%s\n", s);
+    }
+    else if (fd == 2)
+    {
+        fprintf(stderr, "%s\n", s);
+    }
+}
+
 #endif /* WIN32 */

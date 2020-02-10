@@ -100,14 +100,14 @@ TEST_F(FTMallocTest, ReallocFreePrevExtend2)
 
 TEST_F(FTMallocTest, ReallocFreeNextEdgeExtendSmall)
 {
-    void* a = ftmalloc(96);
+    void* a = ftmalloc(FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - 2 * FTMALLOC_MEM_CHUNK_SZ);
     EXPECT_NE(a, nullptr);
-    void* b = ftmalloc(16);
+    void* b = ftmalloc(FTMALLOC_MEM_CHUNK_SZ);
     EXPECT_NE(b, nullptr);
     void* c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
     ftfree(b);
-    void* aa = ftrealloc(a, 112);
+    void* aa = ftrealloc(a, FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_MEM_CHUNK_SZ);
     EXPECT_NE(aa, nullptr);
     EXPECT_NE(aa, a);
 
