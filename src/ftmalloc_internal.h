@@ -140,6 +140,7 @@ extern pthread_mutex_t g_ftmalloc_mutex;
 ** INTERNAL GENERAL PURPOSE ALLOCATORS
 */
 void		*ftmalloc_internal(size_t size);
+void		*ftcalloc_internal(size_t num, size_t size);
 void		*ftrealloc_internal(void *mem, size_t size);
 void		ftfree_internal(void *mem);
 

@@ -19,9 +19,9 @@
 ** General Purpose Allocators
 */
 void	*ftmalloc(size_t size);
+void    *ftcalloc(size_t num, size_t size);
 void	*ftrealloc(void *mem, size_t size);
 void	ftfree(void *mem);
-void    ftcalloc(size_t num, size_t size); // TODO: implement
 
 /*
 ** Debug

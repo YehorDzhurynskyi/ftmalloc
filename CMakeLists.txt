@@ -4,6 +4,7 @@ project(malloc)
 
 add_library(malloc STATIC
     src/ftmalloc.c
+    src/ftcalloc.c
     src/ftrealloc.c
     src/ftfree.c
     src/ftmalloc_show_mem.c
@@ -117,6 +118,7 @@ add_executable(malloctest
 
     test/main.cpp
     test/malloc.cpp
+    test/calloc.cpp
     test/realloc.cpp
     test/mt.cpp
     test/mt_realloc.cpp
