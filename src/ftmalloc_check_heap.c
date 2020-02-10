@@ -46,8 +46,11 @@ int		    ftmalloc_check_heap_relaxed(void)
     is_valid = is_valid && bin_verify_freed_links_internal(g_ftmalloc_state.bin_list_medium);
     is_valid = is_valid && bin_verify_freed_links_internal(g_ftmalloc_state.bin_list_large);
 
-    ft_putendl_fd("ftmalloc heap corruption error: invalid freed links!", 2);
-    FTMALLOC_ASSERT(is_valid && "ftmalloc heap corruption error: invalid freed links!");
+    if (!is_valid)
+    {
+        ft_putendl_fd("ftmalloc heap corruption error: invalid freed links!", 2);
+        FTMALLOC_ASSERT(is_valid && "ftmalloc heap corruption error: invalid freed links!");
+    }
 
     return (is_valid);
 }
@@ -151,8 +154,11 @@ int		    ftmalloc_check_heap_fully(void)
     is_valid = is_valid && bin_verify_contiguous_internal(g_ftmalloc_state.bin_list_medium);
     is_valid = is_valid && bin_verify_contiguous_internal(g_ftmalloc_state.bin_list_large);
 
-    ft_putendl_fd("ftmalloc heap corruption error: contiguous memory has been corrupted!", 2);
-    FTMALLOC_ASSERT(is_valid && "ftmalloc heap corruption error: contiguous memory has been corrupted!");
+    if (!is_valid)
+    {
+        ft_putendl_fd("ftmalloc heap corruption error: contiguous memory has been corrupted!", 2);
+        FTMALLOC_ASSERT("ftmalloc heap corruption error: contiguous memory has been corrupted!");
+    }
 
     return (is_valid);
 }
