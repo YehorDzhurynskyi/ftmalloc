@@ -117,14 +117,14 @@ TEST_F(FTMallocTest, ReallocFreeNextEdgeExtendSmall)
 
 TEST_F(FTMallocTest, ReallocFreeNextEdgeExtendLarge)
 {
-    void* a = ftmalloc(8144);
+    void* a = ftmalloc(2 * getpagesize() - 3 * FTMALLOC_MEM_CHUNK_SZ);
     EXPECT_NE(a, nullptr);
     void* b = ftmalloc(208);
     EXPECT_NE(b, nullptr);
     void* c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
     ftfree(b);
-    void* aa = ftrealloc(a, 8352);
+    void* aa = ftrealloc(a, 2 * getpagesize() - 3 * FTMALLOC_MEM_CHUNK_SZ + 208);
     EXPECT_EQ(a, aa);
 
     ftfree(a);
@@ -148,8 +148,8 @@ TEST_F(FTMallocTest, ReallocContentExtend)
 {
     char *a = (char*)ftrealloc(NULL, FTMALLOC_MEM_CHUNK_SZ);
     EXPECT_NE(a, nullptr);
-    memcpy(a, "ROC1ROC2ROC3", sizeof("ROC1ROC2ROC3") + 1);
-    EXPECT_STREQ(a, "ROC1ROC2ROC3");
+    memcpy(a, "ROC1", sizeof("ROC1") + 1);
+    EXPECT_STREQ(a, "ROC1");
 
     char *b = (char*)ftmalloc(48);
     EXPECT_NE(b, nullptr);
@@ -163,7 +163,7 @@ TEST_F(FTMallocTest, ReallocContentExtend)
     a = (char*)ftrealloc(a, 32);
     EXPECT_NE(a, nullptr);
     strcat(a, ", my world");
-    EXPECT_STREQ(a, "ROC1ROC2ROC3, my world");
+    EXPECT_STREQ(a, "ROC1, my world");
 
     ftfree(a);
     ftfree(c);
@@ -296,7 +296,7 @@ TEST_F(FTMallocTest, ReallocContentShrink)
     a = (char*)ftrealloc(a, FTMALLOC_MEM_CHUNK_SZ);
     EXPECT_NE(a, nullptr);
     a[FTMALLOC_MEM_CHUNK_SZ - 1] = '\0';
-    EXPECT_STREQ(a, "ROC1ROC2ROC3, m");
+    EXPECT_EQ(0, strncmp(a, "ROC1ROC2ROC3, m", FTMALLOC_MEM_CHUNK_SZ - 1));
 
     ftfree(a);
     ftfree(c);
