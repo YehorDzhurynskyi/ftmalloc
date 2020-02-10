@@ -213,7 +213,13 @@ namespace
 
 TEST_F(FTMallocTest, MTMallocReallocFree)
 {
-    WINDOWNS_ONLY(SetEnvironmentVariable("MallocScribble", ""));
+    setenv(FTMALLOC_ENV_SCRIBBLE, "1", 1);
+    setenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED, "1", 1);
+    setenv(FTMALLOC_ENV_CHECK_HEAP_FULLY, "1", 1);
+
+    assert(getenv(FTMALLOC_ENV_SCRIBBLE));
+    assert(getenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED));
+    assert(getenv(FTMALLOC_ENV_CHECK_HEAP_FULLY));
 
     srand(time(NULL));
 
@@ -298,7 +304,13 @@ TEST_F(FTMallocTest, MTMallocReallocFree)
     free(md_size);
     free(lg_size);
 
-    WINDOWNS_ONLY(SetEnvironmentVariable("MallocScribble", nullptr));
+    unsetenv(FTMALLOC_ENV_SCRIBBLE);
+    unsetenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED);
+    unsetenv(FTMALLOC_ENV_CHECK_HEAP_FULLY);
+
+    assert(!getenv(FTMALLOC_ENV_SCRIBBLE));
+    assert(!getenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED));
+    assert(!getenv(FTMALLOC_ENV_CHECK_HEAP_FULLY));
 }
 
 }

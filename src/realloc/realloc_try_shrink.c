@@ -21,7 +21,8 @@ static void	realloc_shrink(t_mem *mem, size_t size, size_t osize)
 	adjmem.bin = mem->bin;
 	adjmem.chunk = chunk_adj_next(mem->chunk);
 	buddy_deoccupy(&adjmem);
-	ft_memset((t_byte*)chunk_chunk2mem(adjmem.chunk) + FTMALLOC_MEM_MIN_PAYLOAD_SZ, 0xfd, chunk_size_get(adjmem.chunk) - FTMALLOC_MEM_MIN_PAYLOAD_SZ);
+    if (getenv(FTMALLOC_ENV_SCRIBBLE))
+	    ft_memset((t_byte*)chunk_chunk2mem(adjmem.chunk) + FTMALLOC_MEM_MIN_PAYLOAD_SZ, 0xfd, chunk_size_get(adjmem.chunk) - FTMALLOC_MEM_MIN_PAYLOAD_SZ);
 	FTMALLOC_ASSERT(osize >= chunk_size_get(mem->chunk));
 	dsize = osize - chunk_size_get(mem->chunk);
 	mem->bin->mem_user -= dsize;

@@ -130,4 +130,14 @@ munmap_exit:
 	return rc;
 }
 
+int setenv(const char *name, const char *value, int overwrite)
+{
+    _putenv_s(name, value);
+}
+
+int     unsetenv(const char *name)
+{
+    _putenv_s(name, "");
+}
+
 #endif /* WIN32 */

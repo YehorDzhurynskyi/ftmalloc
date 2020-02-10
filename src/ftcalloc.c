@@ -12,15 +12,6 @@
 
 #include "ftmalloc_internal.h"
 
-static t_bool	size_request_is_out_of_range(size_t size)
-{
-	size_t minsize;
-
-	minsize = FTMALLOC_MEM_ALIGN_UP(
-		FTMALLOC_MEM_CHUNK_SZ + FTMALLOC_MEM_MIN_PAYLOAD_SZ);
-	return (size >= (size_t)(-2 * minsize));
-}
-
 static t_bool	validate_input(size_t num, size_t size)
 {
 	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(FTMALLOC_MEM_CHUNK_SZ));
@@ -29,8 +20,8 @@ static t_bool	validate_input(size_t num, size_t size)
 	{
 		return (FALSE);
 	}
-	if (size_request_is_out_of_range(num) ||
-        size_request_is_out_of_range(size))
+	if (ftmalloc_size_request_is_out_of_range(num) ||
+        ftmalloc_size_request_is_out_of_range(size))
 	{
         errno = ENOMEM;
 		return (FALSE);
@@ -63,7 +54,7 @@ void			*ftcalloc(size_t num, size_t size)
 		return (NULL);
 	}
 	mem = ftcalloc_internal(num, size);
-    FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_fully());
+    ftmalloc_call_epilogue();
 	FTMALLOC_UNLOCK;
 	return (mem);
 }

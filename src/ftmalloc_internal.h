@@ -13,6 +13,8 @@
 #ifndef FTMALLOC_INTERNAL_H
 # define FTMALLOC_INTERNAL_H
 
+# include "ftmalloc.h"
+
 # include <stddef.h>
 # include <errno.h>
 
@@ -143,6 +145,12 @@ void		*ftmalloc_internal(size_t size);
 void		*ftcalloc_internal(size_t num, size_t size);
 void		*ftrealloc_internal(void *mem, size_t size);
 void		ftfree_internal(void *mem);
+
+/*
+** COMMON
+*/
+t_bool      ftmalloc_size_request_is_out_of_range(size_t size);
+void        ftmalloc_call_epilogue();
 
 /*
 ** DEBUG

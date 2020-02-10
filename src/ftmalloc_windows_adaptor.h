@@ -11,6 +11,8 @@ long    munmap(void *ptr, long size);
 long    getpagesize();
 int     slwait(int *sl);
 int     slrelease(int *sl);
+int     setenv(const char *name, const char *value, int overwrite);
+int     unsetenv(const char *name);
 
 typedef int t_bool;
 typedef unsigned char t_byte;

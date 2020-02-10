@@ -98,7 +98,8 @@ size_t adjsize)
 	dsize = chunk_size_get(mem->chunk) - osize;
 	mem->bin->mem_user += dsize;
 	mem->bin->mem_occupied += dsize;
-    ft_memset((t_byte*)chunk_chunk2mem(mem->chunk) + osize, 0xfa, dsize);
+    if (getenv(FTMALLOC_ENV_SCRIBBLE))
+        ft_memset((t_byte*)chunk_chunk2mem(mem->chunk) + osize, 0xfa, dsize);
     FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc += dsize);
 	bin_verify(mem->bin);
 	chunk_verify(mem->chunk);

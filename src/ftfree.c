@@ -57,7 +57,7 @@ static void		release(t_mem *mem, const size_t size, t_mem_bin *prev_bin)
 	{
 		mem_deallocate(mem, size, prev_bin);
 	}
-	else
+	else if (getenv(FTMALLOC_ENV_SCRIBBLE))
 	{
 		ft_memset((t_byte*)chunk_chunk2mem(mem->chunk) + FTMALLOC_MEM_MIN_PAYLOAD_SZ, 0xfd, chunk_size_get(mem->chunk) - FTMALLOC_MEM_MIN_PAYLOAD_SZ);
 	}
@@ -97,6 +97,6 @@ void			ftfree(void *mem)
 		return ;
 	}
 	ftfree_internal(mem);
-    FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_fully());
+    ftmalloc_call_epilogue();
 	FTMALLOC_UNLOCK;
 }

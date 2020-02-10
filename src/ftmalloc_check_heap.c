@@ -37,7 +37,7 @@ static t_bool	bin_verify_freed_links_internal(t_mem_bin *bin)
     return (TRUE);
 }
 
-t_bool		    ftmalloc_check_heap_relaxed(void)
+int		    ftmalloc_check_heap_relaxed(void)
 {
     t_bool is_valid;
 
@@ -137,7 +137,7 @@ static t_bool   bin_verify_contiguous_internal(t_mem_bin *bin)
     return (TRUE);
 }
 
-t_bool		    ftmalloc_check_heap_fully(void)
+int		    ftmalloc_check_heap_fully(void)
 {
     t_bool  is_valid;
 

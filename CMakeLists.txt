@@ -7,6 +7,7 @@ add_library(malloc STATIC
     src/ftcalloc.c
     src/ftrealloc.c
     src/ftfree.c
+    src/ftmalloc_common.c
     src/ftmalloc_show_mem.c
     src/ftmalloc_check_heap.c
 

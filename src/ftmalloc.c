@@ -20,15 +20,6 @@ int g_ftmalloc_mutex = 0;
 pthread_mutex_t g_ftmalloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 #endif
 
-static t_bool	size_request_is_out_of_range(size_t size)
-{
-	size_t minsize;
-
-	minsize = FTMALLOC_MEM_ALIGN_UP(
-		FTMALLOC_MEM_CHUNK_SZ + FTMALLOC_MEM_MIN_PAYLOAD_SZ);
-	return (size >= (size_t)(-2 * minsize));
-}
-
 static t_bool	validate_input(const size_t size)
 {
 	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(FTMALLOC_MEM_CHUNK_SZ));
@@ -37,7 +28,7 @@ static t_bool	validate_input(const size_t size)
 	{
 		return (FALSE);
 	}
-	if (size_request_is_out_of_range(size))
+	if (ftmalloc_size_request_is_out_of_range(size))
 	{
 		errno = ENOMEM;
 		return (FALSE);
@@ -68,7 +59,8 @@ void			*ftmalloc_internal(size_t size)
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.usage_alloc++);
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc +=
 	chunk_size_get(mem.chunk));
-	ft_memset(chunk_chunk2mem(mem.chunk), 0xfa, chunk_size_get(mem.chunk));
+    if (getenv(FTMALLOC_ENV_SCRIBBLE))
+    	ft_memset(chunk_chunk2mem(mem.chunk), 0xfa, chunk_size_get(mem.chunk));
 	FTMALLOC_ASSERT(mem.bin == chunk_bin_of(mem.chunk, NULL) &&
 	mem.bin == chunk_bin_of_slow(mem.chunk));
 	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(chunk_chunk2mem(mem.chunk)));
@@ -84,7 +76,7 @@ void			*ftmalloc(size_t size)
 		return (NULL);
 	}
 	mem = ftmalloc_internal(size);
-    FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_fully());
+    ftmalloc_call_epilogue();
 	FTMALLOC_UNLOCK;
 	return (mem);
 }

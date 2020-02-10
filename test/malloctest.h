@@ -5,12 +5,6 @@ extern "C"
 }
 
 #include "gtest/gtest.h"
-#ifdef WIN32
-#include <windows.h>
-#define WINDOWNS_ONLY(x) x
-#else
-#define WINDOWNS_ONLY(x)
-#endif
 
 class FTMallocTest : public ::testing::Test
 {
@@ -74,12 +68,14 @@ class FTMallocEnvScribbleTest : public FTMallocTest
 protected:
     void SetUp() override
     {
-        WINDOWNS_ONLY(SetEnvironmentVariable("MallocScribble", ""));
+        setenv(FTMALLOC_ENV_SCRIBBLE, "1", 1);
+        assert(getenv(FTMALLOC_ENV_SCRIBBLE));
     }
 
     void TearDown() override
     {
-        WINDOWNS_ONLY(SetEnvironmentVariable("MallocScribble", nullptr));
+        unsetenv(FTMALLOC_ENV_SCRIBBLE);
+        assert(!getenv(FTMALLOC_ENV_SCRIBBLE));
         FTMallocTest::TearDown();
     }
 };
@@ -89,12 +85,14 @@ class FTMallocEnvCheckHeapRelaxedTest : public FTMallocTest
 protected:
     void SetUp() override
     {
-        WINDOWNS_ONLY(SetEnvironmentVariable("MallocCheckHeapRelaxed", ""));
+        setenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED, "1", 1);
+        assert(getenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED));
     }
 
     void TearDown() override
     {
-        WINDOWNS_ONLY(SetEnvironmentVariable("MallocCheckHeapRelaxed", nullptr));
+        unsetenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED);
+        assert(!getenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED));
         FTMallocTest::TearDown();
     }
 };
@@ -104,12 +102,14 @@ class FTMallocEnvCheckHeapFullyTest : public FTMallocTest
 protected:
     void SetUp() override
     {
-        WINDOWNS_ONLY(SetEnvironmentVariable("MallocCheckHeapFully", ""));
+        setenv(FTMALLOC_ENV_CHECK_HEAP_FULLY, "1", 1);
+        assert(getenv(FTMALLOC_ENV_CHECK_HEAP_FULLY));
     }
 
     void TearDown() override
     {
-        WINDOWNS_ONLY(SetEnvironmentVariable("MallocCheckHeapFully", nullptr));
+        unsetenv(FTMALLOC_ENV_CHECK_HEAP_FULLY);
+        assert(!getenv(FTMALLOC_ENV_CHECK_HEAP_FULLY));
         FTMallocTest::TearDown();
     }
 };

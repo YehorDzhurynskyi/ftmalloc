@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftmalloc.h                                         :+:      :+:    :+:   */
+/*   ftmalloc_common.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,29 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FTMALLOC_H
-# define FTMALLOC_H
+#include "ftmalloc_internal.h"
 
-# include <stddef.h>
+t_bool	ftmalloc_size_request_is_out_of_range(size_t size)
+{
+	size_t minsize;
 
-# define FTMALLOC_ENV_SCRIBBLE              "MallocScribble"
-# define FTMALLOC_ENV_CHECK_HEAP_RELAXED    "MallocCheckHeapRelaxed"
-# define FTMALLOC_ENV_CHECK_HEAP_FULLY      "MallocCheckHeapFully"
+	minsize = FTMALLOC_MEM_ALIGN_UP(FTMALLOC_MEM_CHUNK_SZ +
+    FTMALLOC_MEM_MIN_PAYLOAD_SZ);
+	return (size >= (size_t)(-2 * minsize));
+}
 
-/*
-** General Purpose Allocators
-*/
-void	*ftmalloc(size_t size);
-void    *ftcalloc(size_t num, size_t size);
-void	*ftrealloc(void *mem, size_t size);
-void	ftfree(void *mem);
-
-/*
-** Debug
-*/
-void	ftmalloc_show_mem();
-void	ftmalloc_show_mem_ex();
-int     ftmalloc_check_heap_relaxed();
-int     ftmalloc_check_heap_fully();
-
-#endif
+void	ftmalloc_call_epilogue()
+{
+    FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
+    if (getenv(FTMALLOC_ENV_CHECK_HEAP_FULLY))
+    {
+        if (!ftmalloc_check_heap_fully())
+        {
+            errno = ENOMEM;
+        }
+    }
+    else if (getenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED))
+    {
+        if (!ftmalloc_check_heap_relaxed())
+        {
+            errno = ENOMEM;
+        }
+    }
+}
