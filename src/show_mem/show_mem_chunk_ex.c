@@ -15,7 +15,7 @@
 static void	print_hex_dump(t_byte *raw, size_t size)
 {
 	t_byte	b;
-	int		i;
+	size_t	i;
 
 	ft_printf("\t\t0x%p: ", raw);
 	i = 0;

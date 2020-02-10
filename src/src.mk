@@ -1,13 +1,13 @@
 SRC_DIR		:=	$(MALLOC_DIR)src/
-SRC_SRC		:=	ftmalloc_malloc.c\
-				ftmalloc_realloc.c\
-				ftmalloc_free.c\
-				ftmalloc_bin.c\
-				ftmalloc_buddy.c\
-				ftmalloc_chunk.c\
-				ftmalloc_init.c\
-				ftmalloc_reserve_mem.c\
+SRC_SRC		:=	ftcalloc.c\
+				ftfree.c\
+				ftmalloc_check_heap_fully.c\
+				ftmalloc_check_heap_relaxed.c\
+				ftmalloc_common.c\
+				ftmalloc_posix.c\
 				ftmalloc_show_mem.c\
+				ftmalloc.c\
+				ftrealloc.c\
 
 SRC_OBJ		=	$(addprefix $(MALLOC_OBJ_DIR), $(SRC_SRC:.c=.o))
 MALLOC_SRC	+=	$(addprefix $(SRC_DIR), $(SRC_SRC:.c=.o))

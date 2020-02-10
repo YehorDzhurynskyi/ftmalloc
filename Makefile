@@ -5,56 +5,49 @@ LIBFT_SRC		=
 LIBFT_OBJ		=
 LIBFT_OBJ_DIR	:=	./obj/libft/
 LIBFT_INCLUDE	:=	-I$(LIBFT_DIR)include/ -I$(LIBFT_DIR)
-LIBFT_CFLAGS	:=	-g3 -c -Wall -Wextra -Werror -DFTMALLOC_DEBUG -DFTMALLOC_THREADSAFE
-#LIBFT_CFLAGS	:=	-O3 -c -Wall -Wextra -Werror -DFTMALLOC_THREADSAFE
+LIBFT_CFLAGS	:=	-g3 -c -Wall -Wextra -Werror -DFTMALLOC_DEBUG -DFTMALLOC_THREADSAFE -DFTMALLOC_POSIX_API
+
+ifeq ($(HOSTTYPE),)
+	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
 
 #	malloc
-MALLOC			:=	malloc.a
+MALLOC			:=	libft_malloc_$(HOSTTYPE).so
+MALLOC_LNK		:=	libft_malloc.so
 MALLOC_DIR		:= ./
 MALLOC_SRC		=
 MALLOC_OBJ		=
 MALLOC_OBJ_DIR	:=	./obj/
-MALLOC_INCLUDE	:=	$(LIBFT_INCLUDE) -I./include/
+MALLOC_INCLUDE	:=	$(LIBFT_INCLUDE) -I./include/ -I./src/
 MALLOC_CFLAGS	:=	$(LIBFT_CFLAGS)
 
 #	compilation
 CC				:=	gcc
 
-all: $(MALLOC) all_test
+all: $(MALLOC_LNK)
 
-include ./src/src.mk
 include ./libft/libft.mk
-include ./test/test.mk
+include ./src/src.mk
+include ./src/bin/bin.mk
+include ./src/buddy/buddy.mk
+include ./src/chunk/chunk.mk
+include ./src/mem/mem.mk
+include ./src/realloc/realloc.mk
+include ./src/show_mem/show_mem.mk
 
 $(MALLOC): $(MALLOC_OBJ) $(LIBFT)
-	ar rc $@ $^
-	ranlib $@
+	$(CC) -dynamiclib -o $@ $^
 
-all_test: test_case_malloc test_case_realloc test_case_mt test_case_mt_realloc
-
-test_case_malloc: obj/test_case_malloc.o $(MALLOC) $(LIBFT)
-	$(CC) $^ -o $@
-
-test_case_realloc: obj/test_case_realloc.o $(MALLOC) $(LIBFT)
-	$(CC) $^ -o $@
-
-test_case_mt:  obj/test_case_mt.o $(MALLOC) $(LIBFT)
-	$(CC) $^ -o $@
-
-test_case_mt_realloc:  obj/test_case_mt_realloc.o $(MALLOC) $(LIBFT)
-	$(CC) $^ -o $@
+$(MALLOC_LNK): | $(MALLOC)
+	ln -s $(MALLOC) $@
 
 clean:
 	rm -f $(MALLOC_OBJ)
 	rm -f $(LIBFT_OBJ)
-	rm -f $(TEST_OBJ)
 
 fclean: clean
 	rm -f $(LIBFT)
 	rm -f $(MALLOC)
-	rm -f test_case_malloc
-	rm -f test_case_realloc
-	rm -f test_case_mt
-	rm -f test_case_mt_realloc
+	rm -f $(MALLOC_LNK)
 
 re: fclean all

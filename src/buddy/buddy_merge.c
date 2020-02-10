@@ -18,17 +18,8 @@ static void	chunk_merge(t_mem_chunk *from, t_mem_chunk *to)
 	chunk_verify(to);
 	FTMALLOC_ASSERT(to == chunk_adj_prev(from));
 	FTMALLOC_ASSERT(from == chunk_adj_next(to));
-	// TODO: rewrite with chunk_arange()
-	const t_bool inuse = chunk_in_use_get(to);
-	chunk_size_set(to, chunk_size_get(to) + chunk_size_get(from) + FTMALLOC_CHUNK_SZ);
-	if (inuse)
-	{
-		chunk_in_use_set_true(to);
-	}
-	else
-	{
-		chunk_in_use_set_false(to);
-	}
+	chunk_arrange((t_byte*)to, chunk_size_get(to) + chunk_size_get(from) +
+	FTMALLOC_CHUNK_SZ, chunk_in_use_get(to));
 	chunk_verify(to);
 }
 

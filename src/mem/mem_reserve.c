@@ -12,7 +12,7 @@
 
 #include "ftmalloc_internal.h"
 
-static void	rebind_freed_links(t_mem *mem, const size_t size)
+static void	rebind_freed_links(t_mem *mem)
 {
 	FTMALLOC_ASSERT(!chunk_in_use_get(mem->chunk));
 	if (mem->bin->head == mem->chunk)
@@ -44,7 +44,7 @@ size_t		mem_reserve(t_mem *mem, const size_t size)
 	if (!chunk_is_splittable(chunk_size_get(mem->chunk),
 	size - FTMALLOC_CHUNK_SZ))
 	{
-		rebind_freed_links(mem, size);
+		rebind_freed_links(mem);
 	}
 	return (newsize);
 }
