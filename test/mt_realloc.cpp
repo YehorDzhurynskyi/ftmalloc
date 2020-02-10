@@ -213,6 +213,10 @@ namespace
 
 TEST_F(FTMallocTest, MTMallocReallocFree)
 {
+#ifdef FTMALLOC_POSIX_API
+    return;
+#endif
+
     setenv(FTMALLOC_ENV_SCRIBBLE, "1", 1);
     setenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED, "1", 1);
     setenv(FTMALLOC_ENV_CHECK_HEAP_FULLY, "1", 1);
