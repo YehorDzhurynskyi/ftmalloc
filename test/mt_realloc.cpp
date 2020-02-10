@@ -213,6 +213,8 @@ namespace
 
 TEST_F(FTMallocTest, MTMallocReallocFree)
 {
+    WINDOWNS_ONLY(SetEnvironmentVariable("MallocScribble", ""));
+
     srand(time(NULL));
 
     void **sm_cluster = (void**)calloc(SIZE, sizeof(void*));
@@ -295,6 +297,8 @@ TEST_F(FTMallocTest, MTMallocReallocFree)
     free(sm_size);
     free(md_size);
     free(lg_size);
+
+    WINDOWNS_ONLY(SetEnvironmentVariable("MallocScribble", nullptr));
 }
 
 }

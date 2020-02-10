@@ -93,13 +93,13 @@ size_t adjsize)
 		mem->bin->mem_occupied -= FTMALLOC_MEM_CHUNK_SZ;
 	FTMALLOC_ASSERT(chunk_size_get(mem->chunk) ==
 	osize + FTMALLOC_MEM_CHUNK_SZ + adjsize);
-	ft_memset(chunk_chunk2mem(merged_next), 0xfa, chunk_size_get(merged_next));
 	do_grow(mem, merged_next, size);
 	FTMALLOC_ASSERT(chunk_size_get(mem->chunk) > osize);
 	dsize = chunk_size_get(mem->chunk) - osize;
 	mem->bin->mem_user += dsize;
 	mem->bin->mem_occupied += dsize;
-	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc += dsize);
+    ft_memset((t_byte*)chunk_chunk2mem(mem->chunk) + osize, 0xfa, dsize);
+    FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc += dsize);
 	bin_verify(mem->bin);
 	chunk_verify(mem->chunk);
 	FTMALLOC_ASSERT(mem->bin == chunk_bin_of(mem->chunk, NULL) &&

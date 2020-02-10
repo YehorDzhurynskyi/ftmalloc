@@ -5,6 +5,12 @@ extern "C"
 }
 
 #include "gtest/gtest.h"
+#ifdef WIN32
+#include <windows.h>
+#define WINDOWNS_ONLY(x) x
+#else
+#define WINDOWNS_ONLY(x)
+#endif
 
 class FTMallocTest : public ::testing::Test
 {
@@ -61,4 +67,19 @@ protected:
 			ftmalloc_show_mem_ex();
 		}
 	}
+};
+
+class FTMallocEnvScribbleTest : public FTMallocTest
+{
+protected:
+    void SetUp() override
+    {
+        WINDOWNS_ONLY(SetEnvironmentVariable("MallocScribble", ""));
+    }
+
+    void TearDown() override
+    {
+        WINDOWNS_ONLY(SetEnvironmentVariable("MallocScribble", nullptr));
+        FTMallocTest::TearDown();
+    }
 };

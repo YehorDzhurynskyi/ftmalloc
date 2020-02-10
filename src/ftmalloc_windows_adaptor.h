@@ -25,8 +25,10 @@ typedef unsigned char t_byte;
 #define PROT_READ 1
 #define PROT_WRITE 2
 
+#define ft_isprint isprint
 #define ft_printf printf
 #define ft_memcpy memcpy
+#define ft_memset memset
 #define ft_ceil ceil
 
 #endif /* WIN32 */

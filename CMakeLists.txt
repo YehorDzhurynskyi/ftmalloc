@@ -120,6 +120,7 @@ add_executable(malloctest
     test/realloc.cpp
     test/mt.cpp
     test/mt_realloc.cpp
+    test/env_scribble.cpp
 )
 
 target_include_directories(malloctest
