@@ -20,21 +20,21 @@ t_bool	ftmalloc_size_request_is_out_of_range(size_t size)
 	return (size >= (size_t)(-2 * minsize));
 }
 
-void	ftmalloc_call_epilogue()
+void	ftmalloc_call_epilogue(void)
 {
-    FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
-    if (getenv(FTMALLOC_ENV_CHECK_HEAP_FULLY))
-    {
-        if (!ftmalloc_check_heap_fully())
-        {
-            errno = ENOMEM;
-        }
-    }
-    else if (getenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED))
-    {
-        if (!ftmalloc_check_heap_relaxed())
-        {
-            errno = ENOMEM;
-        }
-    }
+	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
+	if (getenv(FTMALLOC_ENV_CHECK_HEAP_FULLY))
+	{
+		if (!ftmalloc_check_heap_fully())
+		{
+			errno = ENOMEM;
+		}
+	}
+	else if (getenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED))
+	{
+		if (!ftmalloc_check_heap_relaxed())
+		{
+			errno = ENOMEM;
+		}
+	}
 }

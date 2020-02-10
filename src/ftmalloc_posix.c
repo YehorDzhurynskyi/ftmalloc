@@ -13,23 +13,25 @@
 #include "ftmalloc_internal.h"
 
 #ifdef FTMALLOC_POSIX_API
+
 void	*malloc(size_t size)
 {
-    return (ftmalloc(size));
+	return (ftmalloc(size));
 }
 
 void	*calloc(size_t num, size_t size)
 {
-    return (ftcalloc(num, size));
+	return (ftcalloc(num, size));
 }
 
 void	*realloc(void *mem, size_t size)
 {
-    return (ftrealloc(mem, size));
+	return (ftrealloc(mem, size));
 }
 
 void	free(void *mem)
 {
-    ftfree(mem);
+	ftfree(mem);
 }
+
 #endif

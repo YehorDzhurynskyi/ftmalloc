@@ -21,9 +21,9 @@ static t_bool	validate_input(size_t num, size_t size)
 		return (FALSE);
 	}
 	if (ftmalloc_size_request_is_out_of_range(num) ||
-        ftmalloc_size_request_is_out_of_range(size))
+		ftmalloc_size_request_is_out_of_range(size))
 	{
-        errno = ENOMEM;
+		errno = ENOMEM;
 		return (FALSE);
 	}
 	return (TRUE);
@@ -31,18 +31,18 @@ static t_bool	validate_input(size_t num, size_t size)
 
 void			*ftcalloc_internal(size_t num, size_t size)
 {
-    void *mem;
+	void *mem;
 
-    if (!validate_input(num, size))
-    {
-        return (NULL);
-    }
-    mem = ftmalloc_internal(num * size);
-    if (mem)
-    {
-        ft_memset(mem, 0x0, num * size);
-    }
-    return (mem);
+	if (!validate_input(num, size))
+	{
+		return (NULL);
+	}
+	mem = ftmalloc_internal(num * size);
+	if (mem)
+	{
+		ft_memset(mem, 0x0, num * size);
+	}
+	return (mem);
 }
 
 void			*ftcalloc(size_t num, size_t size)
@@ -54,7 +54,7 @@ void			*ftcalloc(size_t num, size_t size)
 		return (NULL);
 	}
 	mem = ftcalloc_internal(num, size);
-    ftmalloc_call_epilogue();
+	ftmalloc_call_epilogue();
 	FTMALLOC_UNLOCK;
 	return (mem);
 }

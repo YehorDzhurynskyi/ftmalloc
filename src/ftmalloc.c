@@ -54,10 +54,8 @@ void			*ftmalloc_internal(size_t size)
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.usage_alloc++);
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc +=
 	chunk_size_get(mem.chunk));
-    if (getenv(FTMALLOC_ENV_SCRIBBLE))
-    	ft_memset(chunk_chunk2mem(mem.chunk), 0xfa, chunk_size_get(mem.chunk));
-	FTMALLOC_ASSERT(mem.bin == chunk_bin_of(mem.chunk, NULL) &&
-	mem.bin == chunk_bin_of_slow(mem.chunk));
+	if (getenv(FTMALLOC_ENV_SCRIBBLE))
+		ft_memset(chunk_chunk2mem(mem.chunk), 0xfa, chunk_size_get(mem.chunk));
 	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(chunk_chunk2mem(mem.chunk)));
 	return (chunk_chunk2mem(mem.chunk));
 }
@@ -71,7 +69,7 @@ void			*ftmalloc(size_t size)
 		return (NULL);
 	}
 	mem = ftmalloc_internal(size);
-    ftmalloc_call_epilogue();
+	ftmalloc_call_epilogue();
 	FTMALLOC_UNLOCK;
 	return (mem);
 }

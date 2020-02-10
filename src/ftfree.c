@@ -99,6 +99,6 @@ void			ftfree(void *mem)
 		return ;
 	}
 	ftfree_internal(mem);
-    ftmalloc_call_epilogue();
+	ftmalloc_call_epilogue();
 	FTMALLOC_UNLOCK;
 }

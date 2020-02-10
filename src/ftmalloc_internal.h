@@ -34,7 +34,7 @@ void			ftfree_internal(void *mem);
 ** COMMON
 */
 t_bool			ftmalloc_size_request_is_out_of_range(size_t size);
-void			ftmalloc_call_epilogue();
+void			ftmalloc_call_epilogue(void);
 
 /*
 ** DEBUG
