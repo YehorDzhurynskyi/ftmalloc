@@ -10,6 +10,7 @@ add_library(malloc STATIC
     src/ftmalloc_common.c
     src/ftmalloc_show_mem.c
     src/ftmalloc_check_heap.c
+    src/ftmalloc_posix.c
 
 	src/bin/bin_adj.c
 	src/bin/bin_init.c
