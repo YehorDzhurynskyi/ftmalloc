@@ -37,15 +37,15 @@ static void	chunk_split(t_mem *m, const size_t s)
 	size_t		osize;
 
 	chunk_verify(m->chunk);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(s));
-	FTMALLOC_ASSERT(chunk_size_get(m->chunk) >= s + FTMALLOC_MEM_CHUNK_SZ);
+	FTMALLOC_ASSERT(FTMALLOC_CHUNK_SZ_OK(s));
+	FTMALLOC_ASSERT(chunk_size_get(m->chunk) >= s + FTMALLOC_CHUNK_SZ);
 	osize = chunk_size_get(m->chunk);
-	m->chunk = chunk_arrange((t_byte*)m->chunk, s - FTMALLOC_MEM_CHUNK_SZ,
+	m->chunk = chunk_arrange((t_byte*)m->chunk, s - FTMALLOC_CHUNK_SZ,
 	chunk_in_use_get(m->chunk));
 	next = chunk_arrange((t_byte*)chunk_adj_next(m->chunk), osize - s, FALSE);
 	FTMALLOC_ASSERT(!chunk_in_use_get(next));
 	rebind_freed_links(m, next);
-	m->bin->mem_occupied += FTMALLOC_MEM_CHUNK_SZ;
+	m->bin->mem_occupied += FTMALLOC_CHUNK_SZ;
 	chunk_verify(next);
 	FTMALLOC_ASSERT(chunk_adj_next(m->chunk) == next);
 	FTMALLOC_ASSERT(chunk_adj_prev(next) == m->chunk);
@@ -54,21 +54,21 @@ static void	chunk_split(t_mem *m, const size_t s)
 void		buddy_occupy(t_mem *m, const size_t s)
 {
 	chunk_verify(m->chunk);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(s));
-	FTMALLOC_ASSERT(chunk_size_get(m->chunk) >= s - FTMALLOC_MEM_CHUNK_SZ);
+	FTMALLOC_ASSERT(FTMALLOC_CHUNK_SZ_OK(s));
+	FTMALLOC_ASSERT(chunk_size_get(m->chunk) >= s - FTMALLOC_CHUNK_SZ);
 	if (chunk_is_splittable(chunk_size_get(m->chunk),
-	s - FTMALLOC_MEM_CHUNK_SZ))
+	s - FTMALLOC_CHUNK_SZ))
 	{
 		chunk_split(m, s);
 	}
 	else
 	{
 		FTMALLOC_ASSERT(
-			chunk_size_get(m->chunk) - (s - FTMALLOC_MEM_CHUNK_SZ) == 0 ||
+			chunk_size_get(m->chunk) - (s - FTMALLOC_CHUNK_SZ) == 0 ||
 			chunk_size_get(m->chunk) -
-			(s - FTMALLOC_MEM_CHUNK_SZ) == FTMALLOC_MEM_MIN_PAYLOAD_SZ);
+			(s - FTMALLOC_CHUNK_SZ) == FTMALLOC_MIN_SZ);
 		FTMALLOC_ASSERT(chunk_size_get(m->chunk) +
-		FTMALLOC_MEM_CHUNK_SZ <= bin_max_size_of(s));
+		FTMALLOC_CHUNK_SZ <= bin_max_size_of(s));
 	}
 	chunk_in_use_set_true(m->chunk);
 	chunk_verify(m->chunk);

@@ -13,17 +13,12 @@
 #include "ftmalloc_internal.h"
 
 struct s_ftmalloc_state g_ftmalloc_state;
-
-#ifdef WIN32
-int g_ftmalloc_mutex = 0;
-#else
 pthread_mutex_t g_ftmalloc_mutex = PTHREAD_MUTEX_INITIALIZER;
-#endif
 
 static t_bool	validate_input(const size_t size)
 {
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(FTMALLOC_MEM_CHUNK_SZ));
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(FTMALLOC_MEM_MIN_PAYLOAD_SZ));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(FTMALLOC_CHUNK_SZ));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(FTMALLOC_MIN_SZ));
 	if (size == 0)
 	{
 		return (FALSE);
@@ -43,7 +38,7 @@ void			*ftmalloc_internal(size_t size)
 	if (!validate_input(size))
 		return (NULL);
 	mem = (t_mem){ .chunk = NULL, .bin = NULL };
-	size = FTMALLOC_MEM_ALIGN_UP(size) + FTMALLOC_MEM_CHUNK_SZ;
+	size = FTMALLOC_MEM_ALGN_UP(size) + FTMALLOC_CHUNK_SZ;
 	if ((size = mem_reserve(&mem, size)) == 0)
 	{
 		errno = ENOMEM;
@@ -63,7 +58,7 @@ void			*ftmalloc_internal(size_t size)
     	ft_memset(chunk_chunk2mem(mem.chunk), 0xfa, chunk_size_get(mem.chunk));
 	FTMALLOC_ASSERT(mem.bin == chunk_bin_of(mem.chunk, NULL) &&
 	mem.bin == chunk_bin_of_slow(mem.chunk));
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(chunk_chunk2mem(mem.chunk)));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(chunk_chunk2mem(mem.chunk)));
 	return (chunk_chunk2mem(mem.chunk));
 }
 

@@ -21,12 +21,12 @@ static t_bool	try_bind_with_adj_chunks(t_mem *mem)
 	merged_prev = buddy_try_merge_prev(mem);
 	FTMALLOC_ASSERT(!chunk_in_use_get(mem->chunk));
 	if (merged_prev)
-		mem->bin->mem_occupied -= FTMALLOC_MEM_CHUNK_SZ;
+		mem->bin->mem_occupied -= FTMALLOC_CHUNK_SZ;
 	FTMALLOC_ASSERT(!chunk_in_use_get(mem->chunk));
 	merged_next = buddy_try_merge_next(mem);
 	FTMALLOC_ASSERT(!chunk_in_use_get(mem->chunk));
 	if (merged_next)
-		mem->bin->mem_occupied -= FTMALLOC_MEM_CHUNK_SZ;
+		mem->bin->mem_occupied -= FTMALLOC_CHUNK_SZ;
 	if (merged_next != NULL)
 	{
 		FTMALLOC_ASSERT(merged_prev == NULL || (mem->chunk->freed_next ==
@@ -59,7 +59,9 @@ static void		release(t_mem *mem, const size_t size, t_mem_bin *prev_bin)
 	}
 	else if (getenv(FTMALLOC_ENV_SCRIBBLE))
 	{
-		ft_memset((t_byte*)chunk_chunk2mem(mem->chunk) + FTMALLOC_MEM_MIN_PAYLOAD_SZ, 0xfd, chunk_size_get(mem->chunk) - FTMALLOC_MEM_MIN_PAYLOAD_SZ);
+		ft_memset((t_byte*)chunk_chunk2mem(mem->chunk) +
+		FTMALLOC_MIN_SZ, 0xfd,
+		chunk_size_get(mem->chunk) - FTMALLOC_MIN_SZ);
 	}
 }
 
@@ -72,8 +74,8 @@ void			ftfree_internal(void *raw)
 	if (raw == NULL)
 		return ;
 	mem.chunk = chunk_mem2chunk(raw);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(raw));
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(mem.chunk));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(raw));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(mem.chunk));
 	FTMALLOC_ASSERT(chunk_in_use_get(mem.chunk));
 	chunk_verify(mem.chunk);
 	mem.bin = chunk_bin_of(mem.chunk, &prev_bin);

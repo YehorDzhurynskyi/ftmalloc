@@ -15,15 +15,15 @@
 void	bin_verify(const t_mem_bin *bin)
 {
 	FTMALLOC_ASSERT(bin);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(bin->mem_allocated));
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(bin->mem_occupied));
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(bin->mem_user));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(bin->mem_allocated));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(bin->mem_occupied));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(bin->mem_user));
 	FTMALLOC_ASSERT(bin->mem_occupied <= bin->mem_allocated);
 	FTMALLOC_ASSERT(bin->mem_user < bin->mem_occupied);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(bin->next));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(bin->next));
 	if (bin->head != NULL)
 	{
-		FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(bin->head));
+		FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(bin->head));
 		FTMALLOC_ASSERT(!chunk_in_use_get(bin->head));
 		FTMALLOC_ASSERT(chunk_freed_prev_get(bin->head) == NULL);
 		chunk_verify(bin->head);

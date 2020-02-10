@@ -15,15 +15,15 @@
 
 # include <stddef.h>
 
-# define FTMALLOC_ENV_SCRIBBLE              "MallocScribble"
-# define FTMALLOC_ENV_CHECK_HEAP_RELAXED    "MallocCheckHeapRelaxed"
-# define FTMALLOC_ENV_CHECK_HEAP_FULLY      "MallocCheckHeapFully"
+# define FTMALLOC_ENV_SCRIBBLE				"MallocScribble"
+# define FTMALLOC_ENV_CHECK_HEAP_RELAXED	"MallocCheckHeapRelaxed"
+# define FTMALLOC_ENV_CHECK_HEAP_FULLY		"MallocCheckHeapFully"
 
 /*
 ** General Purpose Allocators
 */
 void	*ftmalloc(size_t size);
-void    *ftcalloc(size_t num, size_t size);
+void	*ftcalloc(size_t num, size_t size);
 void	*ftrealloc(void *mem, size_t size);
 void	ftfree(void *mem);
 
@@ -32,7 +32,7 @@ void	ftfree(void *mem);
 */
 void	ftmalloc_show_mem();
 void	ftmalloc_show_mem_ex();
-int     ftmalloc_check_heap_relaxed();
-int     ftmalloc_check_heap_fully();
+int		ftmalloc_check_heap_relaxed();
+int		ftmalloc_check_heap_fully();
 
 #endif

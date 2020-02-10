@@ -34,13 +34,13 @@ protected:
                 t_mem_chunk* chunk = bin_adj(bin);
                 while (!chunk_is_prev_top(chunk))
                 {
-                    occupied += (chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) + FTMALLOC_MEM_CHUNK_SZ;
+                    occupied += (chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) + FTMALLOC_CHUNK_SZ;
                     user += chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0;
                     available += chunk_in_use_get(chunk) ? 0 : chunk_size_get(chunk);
 
                     chunk = chunk_adj_prev(chunk);
                 }
-                occupied += (chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) + FTMALLOC_MEM_CHUNK_SZ;
+                occupied += (chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) + FTMALLOC_CHUNK_SZ;
                 user += chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0;
                 available += chunk_in_use_get(chunk) ? 0 : chunk_size_get(chunk);
 

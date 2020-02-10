@@ -15,7 +15,7 @@
 void	chunk_size_set(t_mem_chunk *chunk, size_t size)
 {
 	FTMALLOC_ASSERT(chunk != NULL);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(size));
+	FTMALLOC_ASSERT(FTMALLOC_CHUNK_SZ_OK(size));
 	chunk->size = (size & ~FTMALLOC_SERVICE_BITS) |
 	(chunk->size & FTMALLOC_SERVICE_BITS);
 	chunk_adj_next(chunk)->prev_size = size;

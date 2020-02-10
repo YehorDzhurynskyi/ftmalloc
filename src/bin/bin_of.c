@@ -27,7 +27,7 @@ size_t		bin_max_size_of(size_t size)
 
 t_mem_bin	*bin_list_of(size_t size)
 {
-	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(size));
+	FTMALLOC_ASSERT(FTMALLOC_CHUNK_SZ_OK(size));
 	if (size <= FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL)
 	{
 		return (g_ftmalloc_state.bin_list_small);
@@ -44,7 +44,7 @@ size_t		bin_alloc_size_of(size_t size)
 	size_t	multiple;
 	size_t	alloc_size;
 
-	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(size));
+	FTMALLOC_ASSERT(FTMALLOC_CHUNK_SZ_OK(size));
 	multiple = getpagesize();
 	alloc_size = 0;
 	if (size <= FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL)
@@ -59,11 +59,11 @@ size_t		bin_alloc_size_of(size_t size)
 	}
 	else
 	{
-		alloc_size = ft_ceil((size + FTMALLOC_MEM_BIN_SZ) /
+		alloc_size = ft_ceil((size + FTMALLOC_BIN_SZ) /
 		(float)multiple) * multiple;
 	}
-	alloc_size = FTMALLOC_ALIGN_UP(alloc_size, multiple);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(alloc_size));
+	alloc_size = FTMALLOC_ALGN_UP(alloc_size, multiple);
+	FTMALLOC_ASSERT(FTMALLOC_CHUNK_SZ_OK(alloc_size));
 	FTMALLOC_ASSERT(alloc_size % multiple == 0);
 	return (alloc_size);
 }

@@ -41,7 +41,7 @@ TEST_F(FTMallocTest, ReallocFreeNextExtend1)
     void *c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
     ftfree(b);
-    void* aa = ftrealloc(a, FTMALLOC_MEM_CHUNK_SZ + 1);
+    void* aa = ftrealloc(a, FTMALLOC_CHUNK_SZ + 1);
     EXPECT_EQ(a, aa);
 
     ftfree(a);
@@ -57,7 +57,7 @@ TEST_F(FTMallocTest, ReallocFreePrevExtend1)
     void *c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
     ftfree(a);
-    void *bb = ftrealloc(b, FTMALLOC_MEM_CHUNK_SZ + 1);
+    void *bb = ftrealloc(b, FTMALLOC_CHUNK_SZ + 1);
     EXPECT_NE(bb, nullptr);
     EXPECT_NE(bb, b);
 
@@ -74,7 +74,7 @@ TEST_F(FTMallocTest, ReallocFreeNextExtend2)
     void* c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
     ftfree(b);
-    void* aa = ftrealloc(a, FTMALLOC_MEM_CHUNK_SZ * 2 + 1);
+    void* aa = ftrealloc(a, FTMALLOC_CHUNK_SZ * 2 + 1);
     EXPECT_EQ(a, aa);
 
     ftfree(a);
@@ -90,7 +90,7 @@ TEST_F(FTMallocTest, ReallocFreePrevExtend2)
     void *c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
     ftfree(a);
-    void *bb = ftrealloc(b, FTMALLOC_MEM_CHUNK_SZ * 2 + 1);
+    void *bb = ftrealloc(b, FTMALLOC_CHUNK_SZ * 2 + 1);
     EXPECT_NE(bb, nullptr);
     EXPECT_NE(bb, b);
 
@@ -100,14 +100,14 @@ TEST_F(FTMallocTest, ReallocFreePrevExtend2)
 
 TEST_F(FTMallocTest, ReallocFreeNextEdgeExtendSmall)
 {
-    void* a = ftmalloc(FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - 2 * FTMALLOC_MEM_CHUNK_SZ);
+    void* a = ftmalloc(FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - 2 * FTMALLOC_CHUNK_SZ);
     EXPECT_NE(a, nullptr);
-    void* b = ftmalloc(FTMALLOC_MEM_CHUNK_SZ);
+    void* b = ftmalloc(FTMALLOC_CHUNK_SZ);
     EXPECT_NE(b, nullptr);
     void* c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
     ftfree(b);
-    void* aa = ftrealloc(a, FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_MEM_CHUNK_SZ);
+    void* aa = ftrealloc(a, FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_CHUNK_SZ);
     EXPECT_NE(aa, nullptr);
     EXPECT_NE(aa, a);
 
@@ -117,14 +117,14 @@ TEST_F(FTMallocTest, ReallocFreeNextEdgeExtendSmall)
 
 TEST_F(FTMallocTest, ReallocFreeNextEdgeExtendLarge)
 {
-    void* a = ftmalloc(2 * getpagesize() - 3 * FTMALLOC_MEM_CHUNK_SZ);
+    void* a = ftmalloc(2 * getpagesize() - 3 * FTMALLOC_CHUNK_SZ);
     EXPECT_NE(a, nullptr);
     void* b = ftmalloc(208);
     EXPECT_NE(b, nullptr);
     void* c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
     ftfree(b);
-    void* aa = ftrealloc(a, 2 * getpagesize() - 3 * FTMALLOC_MEM_CHUNK_SZ + 208);
+    void* aa = ftrealloc(a, 2 * getpagesize() - 3 * FTMALLOC_CHUNK_SZ + 208);
     EXPECT_EQ(a, aa);
 
     ftfree(a);
@@ -146,7 +146,7 @@ TEST_F(FTMallocTest, ReallocPageSizeExceed)
 
 TEST_F(FTMallocTest, ReallocContentExtend)
 {
-    char *a = (char*)ftrealloc(NULL, FTMALLOC_MEM_CHUNK_SZ);
+    char *a = (char*)ftrealloc(NULL, FTMALLOC_CHUNK_SZ);
     EXPECT_NE(a, nullptr);
     memcpy(a, "ROC1", sizeof("ROC1") + 1);
     EXPECT_STREQ(a, "ROC1");
@@ -173,7 +173,7 @@ TEST_F(FTMallocTest, ReallocSmallBucketUpperBoundExceed)
 {
     void *a = ftmalloc(1);
     EXPECT_NE(a, nullptr);
-    void *b = ftmalloc(FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_MEM_CHUNK_SZ);
+    void *b = ftmalloc(FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_CHUNK_SZ);
     EXPECT_NE(b, nullptr);
     ftfree(a);
     void *bb = ftrealloc(b, FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL);
@@ -187,7 +187,7 @@ TEST_F(FTMallocTest, ReallocMediumBucketUpperBoundExceed)
 {
     void *a = ftmalloc(1);
     EXPECT_NE(a, nullptr);
-    void *b = ftmalloc(FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_MEM_CHUNK_SZ);
+    void *b = ftmalloc(FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_CHUNK_SZ);
     EXPECT_NE(b, nullptr);
     ftfree(a);
     void *bb = ftrealloc(b, FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM);
@@ -201,10 +201,10 @@ TEST_F(FTMallocTest, ReallocLargeBucketUpperBoundExceed)
 {
     void *a = ftmalloc(1);
     EXPECT_NE(a, nullptr);
-    void *b = ftmalloc(getpagesize() - FTMALLOC_MEM_CHUNK_SZ - FTMALLOC_MEM_BIN_SZ);
+    void *b = ftmalloc(getpagesize() - FTMALLOC_CHUNK_SZ - FTMALLOC_BIN_SZ);
     EXPECT_NE(b, nullptr);
     ftfree(a);
-    void *bb = ftrealloc(b, getpagesize() - FTMALLOC_MEM_CHUNK_SZ - FTMALLOC_MEM_BIN_SZ + 1);
+    void *bb = ftrealloc(b, getpagesize() - FTMALLOC_CHUNK_SZ - FTMALLOC_BIN_SZ + 1);
     EXPECT_NE(bb, nullptr);
     EXPECT_NE(bb, b);
 
@@ -213,7 +213,7 @@ TEST_F(FTMallocTest, ReallocLargeBucketUpperBoundExceed)
 
 TEST_F(FTMallocTest, ReallocFreeNextShrink1)
 {
-    void *a = ftrealloc(NULL, FTMALLOC_MEM_CHUNK_SZ + 1);
+    void *a = ftrealloc(NULL, FTMALLOC_CHUNK_SZ + 1);
     EXPECT_NE(a, nullptr);
     void *b = ftmalloc(1);
     EXPECT_NE(b, nullptr);
@@ -231,7 +231,7 @@ TEST_F(FTMallocTest, ReallocFreePrevShrink1)
 {
     void *a = ftrealloc(NULL, 1);
     EXPECT_NE(a, nullptr);
-    void *b = ftmalloc(FTMALLOC_MEM_CHUNK_SZ + 1);
+    void *b = ftmalloc(FTMALLOC_CHUNK_SZ + 1);
     EXPECT_NE(b, nullptr);
     void *c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
@@ -246,7 +246,7 @@ TEST_F(FTMallocTest, ReallocFreePrevShrink1)
 
 TEST_F(FTMallocTest, ReallocFreeNextShrink2)
 {
-    void* a = ftrealloc(NULL, FTMALLOC_MEM_CHUNK_SZ * 2 + 1);
+    void* a = ftrealloc(NULL, FTMALLOC_CHUNK_SZ * 2 + 1);
     EXPECT_NE(a, nullptr);
     void* b = ftmalloc(1);
     EXPECT_NE(b, nullptr);
@@ -264,7 +264,7 @@ TEST_F(FTMallocTest, ReallocFreePrevShrink2)
 {
     void *a = ftrealloc(NULL, 1);
     EXPECT_NE(a, nullptr);
-    void *b = ftmalloc(FTMALLOC_MEM_CHUNK_SZ * 2 + 1);
+    void *b = ftmalloc(FTMALLOC_CHUNK_SZ * 2 + 1);
     EXPECT_NE(b, nullptr);
     void *c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
@@ -293,10 +293,10 @@ TEST_F(FTMallocTest, ReallocContentShrink)
     EXPECT_NE(c, nullptr);
 
     ftfree(b);
-    a = (char*)ftrealloc(a, FTMALLOC_MEM_CHUNK_SZ);
+    a = (char*)ftrealloc(a, FTMALLOC_CHUNK_SZ);
     EXPECT_NE(a, nullptr);
-    a[FTMALLOC_MEM_CHUNK_SZ - 1] = '\0';
-    EXPECT_EQ(0, strncmp(a, "ROC1ROC2ROC3, m", FTMALLOC_MEM_CHUNK_SZ - 1));
+    a[FTMALLOC_CHUNK_SZ - 1] = '\0';
+    EXPECT_EQ(0, strncmp(a, "ROC1ROC2ROC3, m", FTMALLOC_CHUNK_SZ - 1));
 
     ftfree(a);
     ftfree(c);
@@ -323,7 +323,7 @@ TEST_F(FTMallocTest, ReallocLargeBucketLowerBoundExceed)
     void *b = ftmalloc(FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM + 1);
     EXPECT_NE(b, nullptr);
     ftfree(a);
-    void *bb = ftrealloc(b, FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_MEM_CHUNK_SZ);
+    void *bb = ftrealloc(b, FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_CHUNK_SZ);
     EXPECT_NE(bb, nullptr);
     EXPECT_NE(bb, b);
 

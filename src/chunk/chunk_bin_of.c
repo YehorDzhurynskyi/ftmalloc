@@ -17,7 +17,7 @@ t_mem_bin	*chunk_bin_of(const t_mem_chunk *chunk, t_mem_bin **prev_bin)
 	t_mem_bin	*bin;
 
 	chunk_verify(chunk);
-	bin = bin_list_of(chunk_size_get(chunk) + FTMALLOC_MEM_CHUNK_SZ);
+	bin = bin_list_of(chunk_size_get(chunk) + FTMALLOC_CHUNK_SZ);
 	if (prev_bin != NULL)
 		*prev_bin = NULL;
 	bin_verify(bin);
@@ -43,5 +43,5 @@ t_mem_bin	*chunk_bin_of_slow(const t_mem_chunk *chunk)
 		chunk = chunk_adj_next(chunk);
 	}
 	chunk = chunk_adj_next(chunk);
-	return ((t_mem_bin*)((t_byte*)chunk + FTMALLOC_MEM_CHUNK_SZ));
+	return ((t_mem_bin*)((t_byte*)chunk + FTMALLOC_CHUNK_SZ));
 }

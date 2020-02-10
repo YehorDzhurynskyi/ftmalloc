@@ -59,7 +59,7 @@ size_t		mem_allocate(t_mem *mem, const size_t size)
 		return (0);
 	}
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_mmap++);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(raw));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(raw));
 	bin = bin_init(raw, alloc_size);
 	bind_to_list(bin, size);
 	mem->bin = bin;

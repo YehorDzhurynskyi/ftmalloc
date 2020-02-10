@@ -32,7 +32,7 @@ size_t		mem_reserve(t_mem *mem, const size_t size)
 {
 	size_t newsize;
 
-	FTMALLOC_ASSERT(size > 0 && FTMALLOC_MEM_ALIGNED_OK(size));
+	FTMALLOC_ASSERT(size > 0 && FTMALLOC_ALGN_OK(size));
 	if ((newsize = mem_find(mem, size)) == 0)
 	{
 		if ((newsize = mem_allocate(mem, size)) == 0)
@@ -42,7 +42,7 @@ size_t		mem_reserve(t_mem *mem, const size_t size)
 		}
 	}
 	if (!chunk_is_splittable(chunk_size_get(mem->chunk),
-	size - FTMALLOC_MEM_CHUNK_SZ))
+	size - FTMALLOC_CHUNK_SZ))
 	{
 		rebind_freed_links(mem, size);
 	}

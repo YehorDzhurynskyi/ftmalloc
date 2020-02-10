@@ -146,12 +146,12 @@ TEST_F(FTMallocTest, MTMallocFree)
     void **lg_cluster = (void**)calloc(SIZE, sizeof(void*));
 
     const size_t sm_min = 1;
-    const size_t sm_max = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_MEM_CHUNK_SZ + 1;
+    const size_t sm_max = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_CHUNK_SZ + 1;
 
-    const size_t md_min = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_MEM_CHUNK_SZ + 1;
-    const size_t md_max = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_MEM_CHUNK_SZ + 1;
+    const size_t md_min = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_CHUNK_SZ + 1;
+    const size_t md_max = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_CHUNK_SZ + 1;
 
-    const size_t lg_min = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_MEM_CHUNK_SZ + 1;
+    const size_t lg_min = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_CHUNK_SZ + 1;
     const size_t lg_max = 1024 * 10;
 
 #ifndef MT

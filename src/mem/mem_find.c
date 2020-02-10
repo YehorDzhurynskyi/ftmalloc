@@ -18,13 +18,13 @@ static size_t	check_bucket_overflow(t_mem *mem, const size_t size)
 	size_t newsize;
 
 	oldsize = chunk_size_get(mem->chunk);
-	newsize = size - FTMALLOC_MEM_CHUNK_SZ;
+	newsize = size - FTMALLOC_CHUNK_SZ;
 	if (oldsize != newsize && !chunk_is_splittable(oldsize, newsize))
 	{
-		FTMALLOC_ASSERT(oldsize - newsize == FTMALLOC_MEM_MIN_PAYLOAD_SZ);
-		if (oldsize + FTMALLOC_MEM_CHUNK_SZ > bin_max_size_of(size))
+		FTMALLOC_ASSERT(oldsize - newsize == FTMALLOC_MIN_SZ);
+		if (oldsize + FTMALLOC_CHUNK_SZ > bin_max_size_of(size))
 		{
-			return (mem_reserve(mem, size + FTMALLOC_MEM_CHUNK_SZ));
+			return (mem_reserve(mem, size + FTMALLOC_CHUNK_SZ));
 		}
 	}
 	return (size);
@@ -45,7 +45,7 @@ size_t			mem_find(t_mem *mem, const size_t size)
 			while (chunk != NULL)
 			{
 				chunk_verify(chunk);
-				if (chunk_size_get(chunk) >= size - FTMALLOC_MEM_CHUNK_SZ)
+				if (chunk_size_get(chunk) >= size - FTMALLOC_CHUNK_SZ)
 				{
 					mem->chunk = chunk;
 					mem->bin = bin;

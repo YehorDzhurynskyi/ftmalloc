@@ -15,13 +15,13 @@
 void	chunk_verify(const t_mem_chunk *chunk)
 {
 	FTMALLOC_ASSERT(chunk);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(chunk));
-	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(chunk_size_get(chunk)));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(chunk));
+	FTMALLOC_ASSERT(FTMALLOC_CHUNK_SZ_OK(chunk_size_get(chunk)));
 	FTMALLOC_ASSERT(chunk_size_get(chunk) == chunk_adj_next(chunk)->prev_size);
 	FTMALLOC_ASSERT(chunk->prev_size == chunk_size_get(chunk_adj_prev(chunk)));
 	if (!chunk_is_prev_top(chunk))
 	{
-		FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(chunk->prev_size));
+		FTMALLOC_ASSERT(FTMALLOC_CHUNK_SZ_OK(chunk->prev_size));
 	}
 	if (!chunk_in_use_get(chunk))
 	{

@@ -20,7 +20,7 @@ void	show_mem_chunk(t_mem_chunk *chunk)
 				chunk_chunk2mem(chunk));
 	ft_printf("\t\tSize: %zu Occupied(%zu User) / %zu Available\n",
 				(chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) +
-				FTMALLOC_MEM_CHUNK_SZ,
+				FTMALLOC_CHUNK_SZ,
 				chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0,
 				chunk_in_use_get(chunk) ? 0 : chunk_size_get(chunk));
 	ft_printf("\t\tFree: %s\n", chunk_in_use_get(chunk) ? "No" : "Yes");

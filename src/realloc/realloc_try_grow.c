@@ -71,7 +71,7 @@ static void			do_grow(t_mem *mem, t_mem_chunk *merged, size_t size)
 	merged_freed_next = merged->freed_next;
 	FTMALLOC_ASSERT(chunk_size_get(mem->chunk) >= size);
 	FTMALLOC_ASSERT(chunk_in_use_get(mem->chunk));
-	buddy_occupy(mem, size + FTMALLOC_MEM_CHUNK_SZ);
+	buddy_occupy(mem, size + FTMALLOC_CHUNK_SZ);
 	local_head = rebind_freed_links(mem, merged_freed_prev, merged_freed_next);
 	if (mem->bin->head == merged)
 	{
@@ -90,17 +90,17 @@ size_t adjsize)
 	merged_next = buddy_try_merge_next(mem);
 	FTMALLOC_ASSERT(merged_next != NULL);
 	if (merged_next)
-		mem->bin->mem_occupied -= FTMALLOC_MEM_CHUNK_SZ;
+		mem->bin->mem_occupied -= FTMALLOC_CHUNK_SZ;
 	FTMALLOC_ASSERT(chunk_size_get(mem->chunk) ==
-	osize + FTMALLOC_MEM_CHUNK_SZ + adjsize);
+	osize + FTMALLOC_CHUNK_SZ + adjsize);
 	do_grow(mem, merged_next, size);
 	FTMALLOC_ASSERT(chunk_size_get(mem->chunk) > osize);
 	dsize = chunk_size_get(mem->chunk) - osize;
 	mem->bin->mem_user += dsize;
 	mem->bin->mem_occupied += dsize;
-    if (getenv(FTMALLOC_ENV_SCRIBBLE))
-        ft_memset((t_byte*)chunk_chunk2mem(mem->chunk) + osize, 0xfa, dsize);
-    FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc += dsize);
+	if (getenv(FTMALLOC_ENV_SCRIBBLE))
+		ft_memset((t_byte*)chunk_chunk2mem(mem->chunk) + osize, 0xfa, dsize);
+	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc += dsize);
 	bin_verify(mem->bin);
 	chunk_verify(mem->chunk);
 	FTMALLOC_ASSERT(mem->bin == chunk_bin_of(mem->chunk, NULL) &&
@@ -112,7 +112,7 @@ t_bool				realloc_try_grow(t_mem *mem, size_t size, size_t osize)
 	t_mem_chunk	*next;
 	size_t		adjsize;
 
-	if (size + FTMALLOC_MEM_CHUNK_SZ > bin_max_size_of(osize) ||
+	if (size + FTMALLOC_CHUNK_SZ > bin_max_size_of(osize) ||
 	chunk_is_next_bottom(mem->chunk))
 	{
 		return (FALSE);
@@ -121,8 +121,8 @@ t_bool				realloc_try_grow(t_mem *mem, size_t size, size_t osize)
 	if (!chunk_in_use_get(next))
 	{
 		adjsize = chunk_size_get(next);
-		if (osize + FTMALLOC_MEM_CHUNK_SZ + adjsize >= size &&
-		osize + 2 * FTMALLOC_MEM_CHUNK_SZ + adjsize <= bin_max_size_of(size))
+		if (osize + FTMALLOC_CHUNK_SZ + adjsize >= size &&
+		osize + 2 * FTMALLOC_CHUNK_SZ + adjsize <= bin_max_size_of(size))
 		{
 			realloc_grow(mem, size, osize, adjsize);
 			return (TRUE);

@@ -15,7 +15,7 @@
 t_byte	*bin_bin2mem(t_mem_bin *bin)
 {
 	bin_verify(bin);
-	return ((t_byte*)bin->head - FTMALLOC_MEM_CHUNK_SZ);
+	return ((t_byte*)bin->head - FTMALLOC_CHUNK_SZ);
 }
 
 t_bool	bin_is_empty(const t_mem_bin *bin)

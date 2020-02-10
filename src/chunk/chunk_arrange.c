@@ -17,8 +17,8 @@ t_mem_chunk	*chunk_arrange(t_byte *mem, size_t size, t_bool inuse)
 	t_mem_chunk *chunk;
 
 	FTMALLOC_ASSERT(mem != NULL);
-	FTMALLOC_ASSERT(FTMALLOC_MEM_ALIGNED_OK(mem));
-	FTMALLOC_ASSERT(FTMALLOC_MEM_CHUNK_SZ_OK(size));
+	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(mem));
+	FTMALLOC_ASSERT(FTMALLOC_CHUNK_SZ_OK(size));
 	chunk = (t_mem_chunk*)mem;
 	chunk_size_set(chunk, size);
 	if (inuse)

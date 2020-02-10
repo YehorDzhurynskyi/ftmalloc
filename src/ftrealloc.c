@@ -24,7 +24,7 @@ static t_bool	try_satisfy_size(t_byte *raw, size_t size)
 	FTMALLOC_ASSERT(mem.bin == chunk_bin_of_slow(mem.chunk));
 	FTMALLOC_ASSERT(chunk_in_use_get(mem.chunk));
 	oldsize = chunk_size_get(mem.chunk);
-	size = FTMALLOC_MEM_ALIGN_UP(size);
+	size = FTMALLOC_MEM_ALGN_UP(size);
 	if (size == oldsize)
 	{
 		return (TRUE);
@@ -38,6 +38,7 @@ static t_bool	try_satisfy_size(t_byte *raw, size_t size)
 		return (realloc_try_shrink(&mem, size, oldsize));
 	}
 	FTMALLOC_ASSERT(!"Unhandled branch");
+	return (FALSE);
 }
 
 static void		*relocate(void *oldmem, const size_t size)
@@ -95,7 +96,7 @@ void			*ftrealloc(void *oldmem, size_t size)
 		return (NULL);
 	}
 	mem = ftrealloc_internal(oldmem, size);
-    ftmalloc_call_epilogue();
+	ftmalloc_call_epilogue();
 	FTMALLOC_UNLOCK;
 	return (mem);
 }

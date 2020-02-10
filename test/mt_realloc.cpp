@@ -179,7 +179,9 @@ static void realloc_worker(void *p)
             if (cmpdiff != 0)
             {
                 printf("cmpdiff error: %i\n", cmpdiff);
+#if WIN32
                 __debugbreak();
+#endif
                 exit(-1);
             }
 #endif
@@ -240,12 +242,12 @@ TEST_F(FTMallocTest, MTMallocReallocFree)
     size_t *lg_size = (size_t*)calloc(SIZE, sizeof(size_t));
 
     const size_t sm_min = 1;
-    const size_t sm_max = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_MEM_CHUNK_SZ + 1;
+    const size_t sm_max = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_CHUNK_SZ + 1;
 
-    const size_t md_min = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_MEM_CHUNK_SZ + 1;
-    const size_t md_max = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_MEM_CHUNK_SZ + 1;
+    const size_t md_min = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL - FTMALLOC_CHUNK_SZ + 1;
+    const size_t md_max = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_CHUNK_SZ + 1;
 
-    const size_t lg_min = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_MEM_CHUNK_SZ + 1;
+    const size_t lg_min = FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM - FTMALLOC_CHUNK_SZ + 1;
     const size_t lg_max = MAXSIZE;
 
 #ifndef MT

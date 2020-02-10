@@ -14,12 +14,12 @@
 
 static void	unbind_from_list(t_mem *mem, const size_t size)
 {
-	if (size + FTMALLOC_MEM_CHUNK_SZ <=
+	if (size + FTMALLOC_CHUNK_SZ <=
 	FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_SMALL)
 	{
 		g_ftmalloc_state.bin_list_small = mem->bin->next;
 	}
-	else if (size + FTMALLOC_MEM_CHUNK_SZ <=
+	else if (size + FTMALLOC_CHUNK_SZ <=
 	FTMALLOC_BIN_ITEM_MAX_ALLOC_SIZE_MEDIUM)
 	{
 		g_ftmalloc_state.bin_list_medium = mem->bin->next;

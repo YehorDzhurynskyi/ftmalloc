@@ -16,8 +16,7 @@ t_bool	ftmalloc_size_request_is_out_of_range(size_t size)
 {
 	size_t minsize;
 
-	minsize = FTMALLOC_MEM_ALIGN_UP(FTMALLOC_MEM_CHUNK_SZ +
-    FTMALLOC_MEM_MIN_PAYLOAD_SZ);
+	minsize = FTMALLOC_MEM_ALGN_UP(FTMALLOC_CHUNK_SZ + FTMALLOC_MIN_SZ);
 	return (size >= (size_t)(-2 * minsize));
 }
 

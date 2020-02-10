@@ -17,12 +17,14 @@ static void	realloc_shrink(t_mem *mem, size_t size, size_t osize)
 	t_mem	adjmem;
 	size_t	dsize;
 
-	buddy_occupy(mem, size + FTMALLOC_MEM_CHUNK_SZ);
+	buddy_occupy(mem, size + FTMALLOC_CHUNK_SZ);
 	adjmem.bin = mem->bin;
 	adjmem.chunk = chunk_adj_next(mem->chunk);
 	buddy_deoccupy(&adjmem);
-    if (getenv(FTMALLOC_ENV_SCRIBBLE))
-	    ft_memset((t_byte*)chunk_chunk2mem(adjmem.chunk) + FTMALLOC_MEM_MIN_PAYLOAD_SZ, 0xfd, chunk_size_get(adjmem.chunk) - FTMALLOC_MEM_MIN_PAYLOAD_SZ);
+	if (getenv(FTMALLOC_ENV_SCRIBBLE))
+		ft_memset((t_byte*)chunk_chunk2mem(adjmem.chunk) +
+		FTMALLOC_MIN_SZ, 0xfd,
+		chunk_size_get(adjmem.chunk) - FTMALLOC_MIN_SZ);
 	FTMALLOC_ASSERT(osize >= chunk_size_get(mem->chunk));
 	dsize = osize - chunk_size_get(mem->chunk);
 	mem->bin->mem_user -= dsize;
@@ -36,7 +38,7 @@ static void	realloc_shrink(t_mem *mem, size_t size, size_t osize)
 
 t_bool		realloc_try_shrink(t_mem *mem, size_t size, size_t osize)
 {
-	if (osize + FTMALLOC_MEM_CHUNK_SZ > bin_max_size_of(size))
+	if (osize + FTMALLOC_CHUNK_SZ > bin_max_size_of(size))
 	{
 		return (FALSE);
 	}

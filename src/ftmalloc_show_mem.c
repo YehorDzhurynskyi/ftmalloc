@@ -21,7 +21,7 @@ static void	show_bin(const t_mem_bin *bin, t_show_chunk_func show_func)
 				" / %zu Available / %zu Total\n",
 				bin->mem_occupied,
 				bin->mem_user,
-				FTMALLOC_MEM_BIN_SZ,
+				FTMALLOC_BIN_SZ,
 				bin->mem_allocated - bin->mem_occupied,
 				bin->mem_allocated);
 	ft_printf("\tHead: %p\n", bin->head);
