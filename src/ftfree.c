@@ -97,6 +97,6 @@ void			ftfree(void *mem)
 		return ;
 	}
 	ftfree_internal(mem);
-	bin_verify_freed_links();
+    FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_fully());
 	FTMALLOC_UNLOCK;
 }

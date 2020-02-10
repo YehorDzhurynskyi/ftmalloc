@@ -7,12 +7,12 @@ add_library(malloc STATIC
     src/ftrealloc.c
     src/ftfree.c
     src/ftmalloc_show_mem.c
+    src/ftmalloc_check_heap.c
 
 	src/bin/bin_adj.c
 	src/bin/bin_init.c
 	src/bin/bin_mem.c
 	src/bin/bin_of.c
-	src/bin/bin_verify_freed_links.c
 	src/bin/bin_verify.c
 
 	src/buddy/buddy_deoccupy.c
@@ -121,6 +121,7 @@ add_executable(malloctest
     test/mt.cpp
     test/mt_realloc.cpp
     test/env_scribble.cpp
+    test/env_check_heap.cpp
 )
 
 target_include_directories(malloctest

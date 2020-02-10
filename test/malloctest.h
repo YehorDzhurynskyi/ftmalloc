@@ -83,3 +83,33 @@ protected:
         FTMallocTest::TearDown();
     }
 };
+
+class FTMallocEnvCheckHeapRelaxedTest : public FTMallocTest
+{
+protected:
+    void SetUp() override
+    {
+        WINDOWNS_ONLY(SetEnvironmentVariable("MallocCheckHeapRelaxed", ""));
+    }
+
+    void TearDown() override
+    {
+        WINDOWNS_ONLY(SetEnvironmentVariable("MallocCheckHeapRelaxed", nullptr));
+        FTMallocTest::TearDown();
+    }
+};
+
+class FTMallocEnvCheckHeapFullyTest : public FTMallocTest
+{
+protected:
+    void SetUp() override
+    {
+        WINDOWNS_ONLY(SetEnvironmentVariable("MallocCheckHeapFully", ""));
+    }
+
+    void TearDown() override
+    {
+        WINDOWNS_ONLY(SetEnvironmentVariable("MallocCheckHeapFully", nullptr));
+        FTMallocTest::TearDown();
+    }
+};

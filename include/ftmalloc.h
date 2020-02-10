@@ -21,11 +21,14 @@
 void	*ftmalloc(size_t size);
 void	*ftrealloc(void *mem, size_t size);
 void	ftfree(void *mem);
+void    ftcalloc(size_t num, size_t size); // TODO: implement
 
 /*
-** Helpers
+** Debug
 */
 void	ftmalloc_show_mem();
 void	ftmalloc_show_mem_ex();
+t_bool  ftmalloc_check_heap_relaxed();
+t_bool  ftmalloc_check_heap_fully();
 
 #endif

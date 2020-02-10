@@ -95,7 +95,7 @@ void			*ftrealloc(void *oldmem, size_t size)
 		return (NULL);
 	}
 	mem = ftrealloc_internal(oldmem, size);
-	bin_verify_freed_links();
+    FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_fully());
 	FTMALLOC_UNLOCK;
 	return (mem);
 }
