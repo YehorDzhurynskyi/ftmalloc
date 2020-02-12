@@ -68,8 +68,22 @@ void			*ftmalloc(size_t size)
 	{
 		return (NULL);
 	}
+	ft_putstr("malloc before: ");
+	ft_putsize(size);
+	ft_putendl("");
+
 	mem = ftmalloc_internal(size);
 	ftmalloc_call_epilogue();
+
+	ft_putstr("malloc after: ");
+	ft_putsize(*((size_t*)&mem));
+	ft_putendl("");
 	FTMALLOC_UNLOCK;
 	return (mem);
+}
+
+void	*malloc(size_t size)
+{
+	ft_putendl("MYMALLOC");
+	return(ftmalloc(size));
 }

@@ -5,7 +5,7 @@ LIBFT_SRC		=
 LIBFT_OBJ		=
 LIBFT_OBJ_DIR	:=	./obj/libft/
 LIBFT_INCLUDE	:=	-I$(LIBFT_DIR)include/ -I$(LIBFT_DIR)
-LIBFT_CFLAGS	:=	-g3 -c -Wall -Wextra -Werror -DFTMALLOC_DEBUG -DFTMALLOC_THREADSAFE -DFTMALLOC_POSIX_API
+LIBFT_CFLAGS	:=	-c -g3 -O0 -Wall -Wextra -Werror
 
 ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
@@ -20,6 +20,7 @@ MALLOC_OBJ		=
 MALLOC_OBJ_DIR	:=	./obj/
 MALLOC_INCLUDE	:=	$(LIBFT_INCLUDE) -I./include/ -I./src/
 MALLOC_CFLAGS	:=	$(LIBFT_CFLAGS)
+MALLOC_CFLAGS	+=	-fPIC -DFTMALLOC_DEBUG -DFTMALLOC_THREADSAFE -DFTMALLOC_POSIX_API
 
 #	compilation
 CC				:=	gcc
@@ -36,7 +37,7 @@ include ./src/realloc/realloc.mk
 include ./src/show_mem/show_mem.mk
 
 $(MALLOC): $(MALLOC_OBJ) $(LIBFT)
-	$(CC) -dynamiclib -o $@ $^
+	$(CC) $(MALLOC_OBJ) -shared -L. -lft -shared -o $@
 
 $(MALLOC_LNK): | $(MALLOC)
 	ln -s $(MALLOC) $@

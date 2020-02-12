@@ -69,6 +69,8 @@ void		ftmalloc_show_mem(void)
 	show_mem_internal(show_mem_chunk);
 }
 
+// TODO: refactor: ft_Printf calls malloc inside)))))))))
+
 void		ftmalloc_show_mem_ex(void)
 {
 	show_mem_internal(show_mem_chunk_ex);

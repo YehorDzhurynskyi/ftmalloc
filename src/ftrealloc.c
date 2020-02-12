@@ -95,8 +95,15 @@ void			*ftrealloc(void *oldmem, size_t size)
 	{
 		return (NULL);
 	}
+	ft_putstr("realloc before: ");
+	ft_putnbr((int)oldmem);
+	ft_putendl("");
+
 	mem = ftrealloc_internal(oldmem, size);
 	ftmalloc_call_epilogue();
+	ft_putstr("realloc after: ");
+	ft_putnbr((int)mem);
+	ft_putendl("");
 	FTMALLOC_UNLOCK;
 	return (mem);
 }

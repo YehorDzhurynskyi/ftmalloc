@@ -38,7 +38,7 @@
 #  include <assert.h>
 #  define FTMALLOC_ASSERT(x) assert(x)
 # else
-#  define FTMALLOC_ASSERT(x)
+#  define FTMALLOC_ASSERT(x) ((void)(x))
 # endif
 
 # define FTMALLOC_CHUNK_SZ (2 * sizeof(size_t))
