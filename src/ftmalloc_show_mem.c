@@ -69,6 +69,7 @@ void		ftmalloc_show_mem(void)
 	show_mem_internal(show_mem_chunk);
 }
 
+// TODO: refactor: put mt lock here
 // TODO: refactor: ft_Printf calls malloc inside)))))))))
 
 void		ftmalloc_show_mem_ex(void)
