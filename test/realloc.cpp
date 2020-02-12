@@ -146,15 +146,17 @@ TEST_F(FTMallocTest, ReallocPageSizeExceed)
 
 TEST_F(FTMallocTest, ReallocContentExtend)
 {
+	const char text1[] = "ROC1";
     char *a = (char*)ftrealloc(NULL, FTMALLOC_CHUNK_SZ);
     EXPECT_NE(a, nullptr);
-    memcpy(a, "ROC1", sizeof("ROC1") + 1);
-    EXPECT_STREQ(a, "ROC1");
+    memcpy(a, text1, sizeof(text1));
+    EXPECT_STREQ(a, text1);
 
+	const char text2[] = "HellLO!";
     char *b = (char*)ftmalloc(48);
     EXPECT_NE(b, nullptr);
-    memcpy(b, "HeLLo!", sizeof("HeLLo!") + 1);
-    EXPECT_STREQ(b, "HeLLo!");
+    memcpy(b, text2, sizeof(text2));
+    EXPECT_STREQ(b, text2);
 
     void *c = ftmalloc(1);
     EXPECT_NE(c, nullptr);
@@ -281,13 +283,15 @@ TEST_F(FTMallocTest, ReallocContentShrink)
 {
     char *a = (char*)ftrealloc(NULL, 48);
     EXPECT_NE(a, nullptr);
-    memcpy(a, "ROC1ROC2ROC3, my world", sizeof("ROC1ROC2ROC3, my world") + 1);
-    EXPECT_STREQ(a, "ROC1ROC2ROC3, my world");
+	const char text[] = "ROC1ROC2ROC3, my world";
+    memcpy(a, text, sizeof(text));
+    EXPECT_STREQ(a, text);
 
     char *b = (char*)ftmalloc(48);
     EXPECT_NE(b, nullptr);
-    memcpy(b, "HeLLo!", sizeof("HeLLo!") + 1);
-    EXPECT_STREQ(b, "HeLLo!");
+	const char text1[] = "HeLLo!";
+    memcpy(b, text1, sizeof(text1));
+    EXPECT_STREQ(b, text1);
 
     void *c = ftmalloc(1);
     EXPECT_NE(c, nullptr);

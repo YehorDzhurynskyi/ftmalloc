@@ -6,7 +6,7 @@ namespace
 bool is_scribbled(char* a, size_t size, int at, char tag)
 {
     bool scribbled = true;
-    for (int i = at; i < size; ++i)
+    for (size_t i = at; i < size; ++i)
     {
         if (a[i] != tag)
         {

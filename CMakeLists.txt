@@ -2,7 +2,17 @@ cmake_minimum_required(VERSION 3.1)
 
 project(malloc)
 
-add_library(malloc STATIC
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "San")
+find_package(Threads REQUIRED)
+
+if (APPLE)
+set(CMAKE_SHARED_LIBRARY_SUFFIX .so)
+set(CMAKE_SHARED_MODULE_SUFFIX .so)
+endif()
+
+add_executable(malloc
+	src/deleteme.c
+
     src/ftmalloc.c
     src/ftcalloc.c
     src/ftrealloc.c
@@ -71,9 +81,12 @@ target_compile_definitions(malloc
 
 set_target_properties(malloc
 	PROPERTIES
+		C_STANDARD 90
 		LINKER_LANGUAGE "C"
+		LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+		ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
-
 
 if (UNIX)
 	message(STATUS "linking libft")
@@ -83,14 +96,22 @@ if (UNIX)
 	target_link_libraries(malloc
 		PUBLIC
 			ft
+			$<$<CONFIG:San>:-fsanitize=address>
+			$<$<CONFIG:San>:-fno-omit-frame-pointer>
 	)
-	
+
 	target_compile_options(malloc
-		PRIVATE
-			-Wall -Werror -Wunused
+		PUBLIC
+			-Wall -Werror -Wextra -fPIC
+			-ansi -fomit-frame-pointer
+			-Wno-missing-field-initializers
+			$<$<CONFIG:Release>:-O3 -flto>
+			$<$<CONFIG:Debug>:-g3 -O0>
+			$<$<CONFIG:San>:-g3 -O0 -fsanitize=address>
 	)
 endif ()
 
+if (FALSE)
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
@@ -131,7 +152,7 @@ add_executable(malloctest
 
 target_include_directories(malloctest
 	PRIVATE
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
 )
 
 target_link_libraries(malloctest PUBLIC malloc gtest)
@@ -144,3 +165,4 @@ set_target_properties(malloctest
 )
 
 add_test(NAME malloc_test COMMAND malloctest)
+endif(FALSE)
