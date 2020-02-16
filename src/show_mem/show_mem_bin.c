@@ -32,8 +32,7 @@ void		show_mem_bin(t_mem_bin *bin, t_show_chunk_func show_func)
 	ft_putstr("\n\tNext Bin: ");
 	ft_putaddress((void*)bin->next);
 	ft_putstr("\n");
-	chunk = (t_mem_chunk*)((t_byte*)bin - (bin->mem_allocated - FTMALLOC_BIN_HEADER_SZ - FTMALLOC_CHUNK_SZ));
-	FTMALLOC_ASSERT(chunk_is_prev_top(chunk));
+	chunk = bin_adj_top(bin);
 	while (!chunk_is_next_bottom(chunk))
 	{
 		show_func(chunk);

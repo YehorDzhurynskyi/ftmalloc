@@ -31,7 +31,7 @@ protected:
                 size_t user = 0;
                 size_t available = 0;
 
-                t_mem_chunk* chunk = bin_adj(bin);
+                t_mem_chunk* chunk = bin_adj_bottom(bin);
                 while (!chunk_is_prev_top(chunk))
                 {
                     occupied += (chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) + FTMALLOC_CHUNK_SZ;

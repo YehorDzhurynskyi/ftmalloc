@@ -73,11 +73,14 @@ void			*ftmalloc(size_t size)
 	{
 		return (NULL);
 	}
+	ftmalloc_call_prologue();
 	mem = ftmalloc_internal(size);
-	ftmalloc_call_epilogue();
+	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_UNLOCK;
 	return (mem);
 }
+
+// TODO: turn on FTMALLOC_DEBUG in release
 
 #ifdef FTMALLOC_POSIX_API
 void			*malloc(size_t size)

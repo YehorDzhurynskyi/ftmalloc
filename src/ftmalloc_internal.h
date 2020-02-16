@@ -38,7 +38,7 @@ void			ftfree_internal(void *mem);
 ** COMMON
 */
 t_bool			ftmalloc_size_request_is_out_of_range(size_t size);
-void			ftmalloc_call_epilogue(void);
+void			ftmalloc_call_prologue(void);
 
 /*
 ** DEBUG
@@ -58,6 +58,7 @@ void			show_mem_internal(t_show_chunk_func show_func);
 /*
 ** MEM
 */
+t_bool			mem_inpool(void *mem);
 size_t			mem_reserve(t_mem *mem, const size_t size);
 size_t			mem_find(t_mem *mem, const size_t size);
 size_t			mem_allocate(t_mem *mem, const size_t size);
@@ -76,7 +77,8 @@ t_mem_bin		*bin_list_of(size_t size);
 size_t			bin_alloc_size_of(size_t size);
 size_t			bin_max_size_of(size_t size);
 
-t_mem_chunk		*bin_adj(const t_mem_bin *bin);
+t_mem_chunk		*bin_adj_top(const t_mem_bin *bin);
+t_mem_chunk     *bin_adj_bottom(const t_mem_bin* bin);
 
 /*
 ** BUDDY

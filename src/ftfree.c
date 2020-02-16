@@ -71,7 +71,7 @@ void			ftfree_internal(void *raw)
 	t_mem		mem;
 	size_t		size;
 
-	if (raw == NULL)
+	if (raw == NULL || !mem_inpool(raw))
 		return ;
 	mem.chunk = chunk_mem2chunk(raw);
 	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(raw));
@@ -98,8 +98,9 @@ void			ftfree(void *mem)
 	{
 		return ;
 	}
+	ftmalloc_call_prologue();
 	ftfree_internal(mem);
-	ftmalloc_call_epilogue();
+	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_UNLOCK;
 }
 

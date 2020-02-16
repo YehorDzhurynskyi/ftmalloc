@@ -66,14 +66,14 @@ void			*ftrealloc_internal(void *oldmem, const size_t size)
 	void	*mem;
 
 	if (oldmem == NULL)
-	{
 		return (ftmalloc_internal(size));
-	}
 	if (size == 0)
 	{
 		ftfree_internal(oldmem);
 		return (NULL);
 	}
+	if (!mem_inpool(oldmem))
+		return (NULL);
 	if (try_satisfy_size(oldmem, size))
 	{
 		mem = oldmem;
@@ -95,8 +95,9 @@ void			*ftrealloc(void *oldmem, size_t size)
 	{
 		return (NULL);
 	}
+	ftmalloc_call_prologue();
 	mem = ftrealloc_internal(oldmem, size);
-	ftmalloc_call_epilogue();
+	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_UNLOCK;
 	return (mem);
 }

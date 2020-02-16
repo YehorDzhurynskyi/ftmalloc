@@ -18,7 +18,9 @@ void		ftmalloc_show_mem(void)
 	{
 		return ;
 	}
+	ftmalloc_call_prologue();
 	show_mem_internal(show_mem_chunk);
+	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_UNLOCK;
 }
 
@@ -28,7 +30,9 @@ void		ftmalloc_show_mem_ex(void)
 	{
 		return;
 	}
+	ftmalloc_call_prologue();
 	show_mem_internal(show_mem_chunk_ex);
+	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_DEBUG_ONLY(ft_putstr("\nTotal Heap Usage:\n\t"));
 	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.total_mmap));
 	FTMALLOC_DEBUG_ONLY(ft_putstr(" mmap\n\t"));

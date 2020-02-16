@@ -36,6 +36,7 @@ add_library(malloc STATIC
 	src/mem/mem_deallocate.c
 	src/mem/mem_find.c
 	src/mem/mem_reserve.c
+	src/mem/mem_inpool.c
 
 	src/realloc/realloc_try_grow.c
 	src/realloc/realloc_try_shrink.c

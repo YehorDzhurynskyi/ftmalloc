@@ -101,7 +101,7 @@ static t_bool	bin_verify_contiguous_internal(t_mem_bin *bin)
 		if (bin->mem_allocated % getpagesize() != 0)
 			return (FALSE);
 		determine_limits(bin, &min_chunk_sz, &max_chunk_sz);
-		chunk = bin_adj(bin);
+		chunk = bin_adj_bottom(bin);
 		bottom = chunk_adj_next(chunk);
 		if (!chunk_is_next_bottom(chunk) || chunk_size_get(bottom) != 0 ||
 		bottom->prev_size != chunk_size_get(chunk))

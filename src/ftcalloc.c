@@ -53,8 +53,9 @@ void			*ftcalloc(size_t num, size_t size)
 	{
 		return (NULL);
 	}
+	ftmalloc_call_prologue();
 	mem = ftcalloc_internal(num, size);
-	ftmalloc_call_epilogue();
+	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_UNLOCK;
 	return (mem);
 }

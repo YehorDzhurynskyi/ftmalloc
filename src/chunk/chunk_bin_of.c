@@ -24,8 +24,7 @@ t_mem_bin	*chunk_bin_of(const t_mem_chunk *chunk, t_mem_bin **prev_bin)
 	while (bin)
 	{
 		bin_verify(bin);
-		if (chunk >= (t_mem_chunk*)((t_byte*)bin - bin->mem_allocated) &&
-			chunk < (t_mem_chunk*)bin)
+		if (chunk >= bin_adj_top(bin) && chunk < (t_mem_chunk*)bin)
 		{
 			break ;
 		}

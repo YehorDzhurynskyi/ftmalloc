@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bin_adj.c                                          :+:      :+:    :+:   */
+/*   mem_inpool.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,25 +12,27 @@
 
 #include "ftmalloc_internal.h"
 
-t_mem_chunk	*bin_adj_bottom(const t_mem_bin *bin)
+static t_bool inbucket(t_mem_bin *bin, void *mem)
 {
-	t_mem_chunk *bottom_chunk;
-
-	bin_verify(bin);
-	bottom_chunk = (t_mem_chunk*)((t_byte*)bin - FTMALLOC_CHUNK_SZ);
-	bottom_chunk = (t_mem_chunk*)((t_byte*)bottom_chunk -
-	bottom_chunk->prev_size - FTMALLOC_CHUNK_SZ);
-	FTMALLOC_ASSERT(chunk_is_next_bottom(bottom_chunk));
-	return (bottom_chunk);
+	while (bin)
+	{
+		bin_verify(bin);
+		if (mem >= bin_adj_top(bin) && mem < (t_mem_chunk*)bin)
+		{
+			return (TRUE);
+		}
+		bin = bin->next;
+	}
+	return (FALSE);
 }
 
-t_mem_chunk	*bin_adj_top(const t_mem_bin *bin)
+t_bool	mem_inpool(void *mem)
 {
-	t_mem_chunk *top_chunk;
+	t_bool inpool;
 
-	bin_verify(bin);
-	top_chunk = (t_mem_chunk*)((t_byte*)bin -
-	(bin->mem_allocated - FTMALLOC_BIN_HEADER_SZ - FTMALLOC_CHUNK_SZ));
-	FTMALLOC_ASSERT(chunk_is_prev_top(top_chunk));
-	return (top_chunk);
+	inpool = FALSE;
+	inpool = inpool || inbucket(g_ftmalloc_state.bin_list_small, mem);
+	inpool = inpool || inbucket(g_ftmalloc_state.bin_list_medium, mem);
+	inpool = inpool || inbucket(g_ftmalloc_state.bin_list_large, mem);
+	return (inpool);
 }
