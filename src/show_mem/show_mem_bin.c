@@ -12,7 +12,7 @@
 
 #include "ftmalloc_internal.h"
 
-void	show_mem_bin(t_mem_bin *bin, t_show_chunk_func show_func)
+void		show_mem_bin(t_mem_bin *bin, t_show_chunk_func show_func)
 {
 	t_mem_chunk* chunk;
 
@@ -32,11 +32,12 @@ void	show_mem_bin(t_mem_bin *bin, t_show_chunk_func show_func)
 	ft_putstr("\n\tNext Bin: ");
 	ft_putaddress((void*)bin->next);
 	ft_putstr("\n");
-	chunk = bin_adj(bin);
-	while (!chunk_is_prev_top(chunk))
+	chunk = (t_mem_chunk*)((t_byte*)bin - (bin->mem_allocated - FTMALLOC_BIN_HEADER_SZ - FTMALLOC_CHUNK_SZ));
+	FTMALLOC_ASSERT(chunk_is_prev_top(chunk));
+	while (!chunk_is_next_bottom(chunk))
 	{
 		show_func(chunk);
-		chunk = chunk_adj_prev(chunk);
+		chunk = chunk_adj_next(chunk);
 	}
 	show_func(chunk);
 	ft_putstr("\n");
@@ -53,7 +54,7 @@ static void	show_mem_bucket(t_show_chunk_func show_func, t_mem_bin *bin, const c
 	}
 }
 
-void	show_mem_internal(t_show_chunk_func show_func)
+void		show_mem_internal(t_show_chunk_func show_func)
 {
 	ft_putstr(" === HEAP USAGE ===\n");
 	show_mem_bucket(show_func, g_ftmalloc_state.bin_list_small, "Small Bucket");

@@ -155,7 +155,10 @@ void    ft_putendl_fd(char const *s, int fd)
 
 void    ft_putstr(const char* str)
 {
-	puts(str);
+	while (*str)
+	{
+		ft_putchar(*str++);
+	}
 }
 
 void    ft_putchar(const char ch)

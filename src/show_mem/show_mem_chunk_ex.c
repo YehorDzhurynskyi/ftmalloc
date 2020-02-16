@@ -14,21 +14,21 @@
 
 #define HEX "0123456789ABCDEF"
 
-static void print_printable(t_byte b)
+static void	print_printable(t_byte b)
 {
 	FTMALLOC_ASSERT(ft_isprint(b));
 	ft_putchar(' ');
 	ft_putchar(b);
 }
 
-static void print_unprintable(t_byte b)
+static void	print_unprintable(t_byte b)
 {
 	FTMALLOC_ASSERT(!ft_isprint(b));
 	ft_putchar(HEX[b / 0x10]);
 	ft_putchar(HEX[b % 0x10]);
 }
 
-static void print_addrline(t_byte *raw)
+static void	print_addrline(t_byte *raw)
 {
 	ft_putstr("\t\t0x");
 	ft_putaddress((void*)raw);
@@ -52,7 +52,10 @@ static void	print_hex_dump(t_byte *raw, size_t size)
 		if (i < size)
 		{
 			if (i % 16 == 0)
+			{
+				ft_putstr("\n");
 				print_addrline(raw + i);
+			}
 			else
 				ft_putstr(" ");
 		}

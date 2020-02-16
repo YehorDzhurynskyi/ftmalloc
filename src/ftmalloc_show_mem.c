@@ -22,8 +22,6 @@ void		ftmalloc_show_mem(void)
 	FTMALLOC_UNLOCK;
 }
 
-// TODO: The visual will be formatted by increasing addresses
-
 void		ftmalloc_show_mem_ex(void)
 {
 	if (FTMALLOC_LOCK != 0)
