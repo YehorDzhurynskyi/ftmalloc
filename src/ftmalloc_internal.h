@@ -13,13 +13,17 @@
 #ifndef FTMALLOC_INTERNAL_H
 # define FTMALLOC_INTERNAL_H
 
+#ifndef WIN32
 # include "ft.h"
+# include <sys/mman.h>
+# include <unistd.h>
+#else
+# include "ftmalloc_windows_adaptor.h"
+#endif
 # include "ftmalloc.h"
 # include "ftmalloc_decl.h"
 # include <stddef.h>
 # include <errno.h>
-# include <sys/mman.h>
-# include <unistd.h>
 # include <stdlib.h>
 
 /*
@@ -39,7 +43,6 @@ void			ftmalloc_call_epilogue(void);
 /*
 ** DEBUG
 */
-void			bin_verify_freed_links();
 void			bin_verify(const t_mem_bin *bin);
 void			chunk_verify(const t_mem_chunk *chunk);
 
@@ -49,6 +52,8 @@ void			chunk_verify(const t_mem_chunk *chunk);
 typedef void	(*t_show_chunk_func)(t_mem_chunk*);
 void			show_mem_chunk(t_mem_chunk *chunk);
 void			show_mem_chunk_ex(t_mem_chunk *chunk);
+void			show_mem_bin(t_mem_bin *bin, t_show_chunk_func show_func);
+void			show_mem_internal(t_show_chunk_func show_func);
 
 /*
 ** MEM

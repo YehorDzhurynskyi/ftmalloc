@@ -1,5 +1,6 @@
 FTIO_DIR	:=	$(LIBFT_DIR)ftio/
 FTIO_SRC	:=	ft_putchar.c\
+				ft_address.c\
 				ft_putchar_fd.c\
 				ft_putstr.c\
 				ft_putstr_fd.c\

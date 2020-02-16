@@ -53,15 +53,15 @@ void			*ftcalloc(size_t num, size_t size)
 	{
 		return (NULL);
 	}
-	ft_putstr("calloc before: ");
-	ft_putnbr((int)size);
-	ft_putendl("");
-
 	mem = ftcalloc_internal(num, size);
 	ftmalloc_call_epilogue();
-	ft_putstr("calloc after: ");
-	ft_putnbr((int)mem);
-	ft_putendl("");
 	FTMALLOC_UNLOCK;
 	return (mem);
 }
+
+#ifdef FTMALLOC_POSIX_API
+void			*calloc(size_t num, size_t size)
+{
+	return (ftcalloc(num, size));
+}
+#endif

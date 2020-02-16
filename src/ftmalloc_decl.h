@@ -19,14 +19,16 @@
 #  define FTMALLOC_DEBUG
 # endif
 
-# ifdef FTMALLOC_THREADSAFE
+#ifdef FTMALLOC_THREADSAFE
+# ifndef WIN32
 #  include <pthread.h>
 #  define FTMALLOC_LOCK (pthread_mutex_lock(&g_ftmalloc_mutex))
 #  define FTMALLOC_UNLOCK (pthread_mutex_unlock(&g_ftmalloc_mutex))
 # else
-#  define FTMALLOC_LOCK 0
-#  define FTMALLOC_UNLOCK
+#  define FTMALLOC_LOCK slwait(&g_ftmalloc_mutex)
+#  define FTMALLOC_UNLOCK slrelease(&g_ftmalloc_mutex)
 # endif
+#endif
 
 # ifdef FTMALLOC_DEBUG
 #  define FTMALLOC_DEBUG_ONLY(x) (x)
@@ -118,7 +120,11 @@ extern struct s_ftmalloc_state g_ftmalloc_state;
 
 # ifdef FTMALLOC_THREADSAFE
 
+#ifdef WIN32
+extern int g_ftmalloc_mutex;
+#else
 extern pthread_mutex_t g_ftmalloc_mutex;
+#endif
 
 # endif
 

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_putaddress.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ydzhuryn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,31 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "libft.h"
 
-static void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
+#define HEX "0123456789ABCDEF"
 
-void		ft_putnbr(int n)
+void	ft_putaddress(void *addr)
 {
-	if (n == -2147483648)
+	char	b[sizeof(void*) * 2 + 1];
+	int		i;
+	size_t	a;
+
+	ft_memset(b, '0', sizeof(b));
+	b[sizeof(b) - 1] = 0x0;
+	a = *((size_t*)&addr);
+	i = sizeof(b) - 1;
+	while (a)
 	{
-		ft_putnbr(-21);
-		ft_putnbr(47483648);
-		return ;
+		b[--i] = HEX[a % 16];
+		a /= 16;
 	}
-	if (n < 0)
-	{
-		n = -n;
-		ft_putchar('-');
-	}
-	if (n / 10 == 0)
-	{
-		ft_putchar(n + '0');
-		return ;
-	}
-	ft_putnbr(n / 10);
-	ft_putchar(n % 10 + '0');
+	ft_putstr(b);
 }

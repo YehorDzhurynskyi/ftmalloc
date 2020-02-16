@@ -98,17 +98,14 @@ void			ftfree(void *mem)
 	{
 		return ;
 	}
-	ft_putstr("free before: ");
-	ft_putsize(*((size_t*)&mem));
-	ft_putendl("");
-
-
 	ftfree_internal(mem);
 	ftmalloc_call_epilogue();
-
-	ft_putstr("free after: ");
-	ft_putsize(*((size_t*)&mem));
-	ft_putendl("");
-
 	FTMALLOC_UNLOCK;
 }
+
+#ifdef FTMALLOC_POSIX_API
+void			free(void *mem)
+{
+	return (ftfree(mem));
+}
+#endif

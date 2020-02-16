@@ -27,6 +27,9 @@ void	*ftcalloc(size_t num, size_t size);
 void	*ftrealloc(void *mem, size_t size);
 void	ftfree(void *mem);
 
+void    show_alloc_mem();
+void    show_alloc_mem_ex();
+
 /*
 ** Debug
 */

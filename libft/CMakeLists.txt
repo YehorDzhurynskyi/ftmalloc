@@ -75,6 +75,7 @@ add_library(${PROJECT_NAME} STATIC
 
 # ftio
 	${CMAKE_CURRENT_LIST_DIR}/ftio/ft_putchar.c
+	${CMAKE_CURRENT_LIST_DIR}/ftio/ft_putaddress.c
 	${CMAKE_CURRENT_LIST_DIR}/ftio/ft_putchar_fd.c
 	${CMAKE_CURRENT_LIST_DIR}/ftio/ft_putendl.c
 	${CMAKE_CURRENT_LIST_DIR}/ftio/ft_putendl_fd.c

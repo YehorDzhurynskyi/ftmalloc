@@ -12,80 +12,53 @@
 
 #include "ftmalloc_internal.h"
 
-static void	show_bin(const t_mem_bin *bin, t_show_chunk_func show_func)
-{
-	t_mem_chunk *chunk;
-
-	bin_verify(bin);
-	ft_printf("\t%zu Occupied(%zu User, %zu Bin Header)"
-				" / %zu Available / %zu Total\n",
-				bin->mem_occupied,
-				bin->mem_user,
-				FTMALLOC_BIN_SZ,
-				bin->mem_allocated - bin->mem_occupied,
-				bin->mem_allocated);
-	ft_printf("\tHead: %p\n", bin->head);
-	ft_printf("\tNext Bin: %p\n", bin->next);
-	chunk = bin_adj(bin);
-	while (!chunk_is_prev_top(chunk))
-	{
-		show_func(chunk);
-		chunk = chunk_adj_prev(chunk);
-	}
-	show_func(chunk);
-	ft_printf("\n");
-}
-
-static void	show_mem_internal(t_show_chunk_func show_func)
-{
-	t_mem_bin *bin;
-
-	ft_printf(" === HEAP USAGE ===\n");
-	bin = g_ftmalloc_state.bin_list_small;
-	ft_printf("Small Bucket%s\n", bin ? ":" : " (Empty)");
-	while (bin)
-	{
-		show_bin(bin, show_func);
-		bin = bin->next;
-	}
-	bin = g_ftmalloc_state.bin_list_medium;
-	ft_printf("Medium Bucket%s\n", bin ? ":" : " (Empty)");
-	while (bin)
-	{
-		show_bin(bin, show_func);
-		bin = bin->next;
-	}
-	bin = g_ftmalloc_state.bin_list_large;
-	ft_printf("Large Bucket%s\n", bin ? ":" : " (Empty)");
-	while (bin)
-	{
-		show_bin(bin, show_func);
-		bin = bin->next;
-	}
-}
-
 void		ftmalloc_show_mem(void)
 {
+	if (FTMALLOC_LOCK != 0)
+	{
+		return ;
+	}
 	show_mem_internal(show_mem_chunk);
+	FTMALLOC_UNLOCK;
 }
 
-// TODO: refactor: put mt lock here
-// TODO: refactor: ft_Printf calls malloc inside)))))))))
+// TODO: The visual will be formatted by increasing addresses
 
 void		ftmalloc_show_mem_ex(void)
 {
+	if (FTMALLOC_LOCK != 0)
+	{
+		return;
+	}
 	show_mem_internal(show_mem_chunk_ex);
-	FTMALLOC_DEBUG_ONLY(
-	ft_printf("\nTotal Heap Usage:\n\t%i mmap\n\t%i munmap\n\t%i"
-				" allocs\n\t%i deallocs\n\t%i reallocs(%i hits)\n\t"
-				"%zu bytes allocated(%zu copied)\n\t%zu bytes deallocated\n",
-				g_ftmalloc_state.total_mmap,
-				g_ftmalloc_state.total_munmap,
-				g_ftmalloc_state.usage_alloc,
-				g_ftmalloc_state.usage_dealloc,
-				g_ftmalloc_state.usage_realloc,
-				g_ftmalloc_state.total_realloc_hits,
-				g_ftmalloc_state.total_alloc,
-				g_ftmalloc_state.total_alloc_copied,
-				g_ftmalloc_state.total_dealloc));
+	FTMALLOC_DEBUG_ONLY(ft_putstr("\nTotal Heap Usage:\n\t"));
+	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.total_mmap));
+	FTMALLOC_DEBUG_ONLY(ft_putstr(" mmap\n\t"));
+	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.total_munmap));
+	FTMALLOC_DEBUG_ONLY(ft_putstr(" munmap\n\t"));
+	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.usage_alloc));
+	FTMALLOC_DEBUG_ONLY(ft_putstr(" allocs\n\t"));
+	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.usage_dealloc));
+	FTMALLOC_DEBUG_ONLY(ft_putstr(" deallocs\n\t"));
+	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.usage_realloc));
+	FTMALLOC_DEBUG_ONLY(ft_putstr(" reallocs("));
+	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.total_realloc_hits));
+	FTMALLOC_DEBUG_ONLY(ft_putstr(" hits)\n\t"));
+	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.total_alloc));
+	FTMALLOC_DEBUG_ONLY(ft_putstr(" bytes allocated("));
+	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.total_alloc_copied));
+	FTMALLOC_DEBUG_ONLY(ft_putstr(" copied)\n\t"));
+	FTMALLOC_DEBUG_ONLY(ft_putnbr(g_ftmalloc_state.total_dealloc));
+	FTMALLOC_DEBUG_ONLY(ft_putstr(" bytes deallocated\n"));
+	FTMALLOC_UNLOCK;
+}
+
+void	show_alloc_mem()
+{
+	ftmalloc_show_mem();
+}
+
+void	show_alloc_mem_ex()
+{
+	ftmalloc_show_mem_ex();
 }

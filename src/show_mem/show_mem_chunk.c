@@ -15,19 +15,26 @@
 void	show_mem_chunk(t_mem_chunk *chunk)
 {
 	chunk_verify(chunk);
-	ft_printf("\t\tAddress: %p\n\t\tUser address: %p\n",
-				chunk,
-				chunk_chunk2mem(chunk));
-	ft_printf("\t\tSize: %zu Occupied(%zu User) / %zu Available\n",
-				(chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) +
-				FTMALLOC_CHUNK_SZ,
-				chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0,
-				chunk_in_use_get(chunk) ? 0 : chunk_size_get(chunk));
-	ft_printf("\t\tFree: %s\n", chunk_in_use_get(chunk) ? "No" : "Yes");
+	ft_putstr("\t\tAddress: ");
+	ft_putaddress((void*)chunk);
+	ft_putstr("\n\t\tUser address: ");
+	ft_putaddress((void*)chunk_chunk2mem(chunk));
+	ft_putstr("\n\t\tSize: ");
+	ft_putnbr((chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) + FTMALLOC_CHUNK_SZ);
+	ft_putstr(" Occupied(");
+	ft_putnbr((chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0));
+	ft_putstr(" User) / ");
+	ft_putnbr(chunk_in_use_get(chunk) ? 0 : chunk_size_get(chunk));
+	ft_putstr(" Available\n\t\tFree: ");
+	ft_putstr(chunk_in_use_get(chunk) ? "No" : "Yes");
+	ft_putstr("\n");
 	if (!chunk_in_use_get(chunk))
 	{
-		ft_printf("\t\tNext Chunk: %p\n", chunk_freed_next_get(chunk));
-		ft_printf("\t\tPrev Chunk: %p\n", chunk_freed_prev_get(chunk));
+		ft_putstr("\t\tNext Chunk: ");
+		ft_putaddress((void*)chunk_freed_next_get(chunk));
+		ft_putstr("\n\t\tPrev Chunk: ");
+		ft_putaddress((void*)chunk_freed_prev_get(chunk));
+		ft_putstr("\n");
 	}
-	ft_printf("\n");
+	ft_putstr("\n");
 }
