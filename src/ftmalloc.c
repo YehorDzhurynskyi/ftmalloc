@@ -69,11 +69,8 @@ void			*ftmalloc(size_t size)
 {
 	void *mem;
 
-	if (FTMALLOC_LOCK != 0)
-	{
+	if (FTMALLOC_LOCK != 0 && !ftmalloc_validate_heap_if_enabled())
 		return (NULL);
-	}
-	ftmalloc_call_prologue();
 	mem = ftmalloc_internal(size);
 	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_UNLOCK;

@@ -50,7 +50,6 @@ int				ftmalloc_check_heap_relaxed(void)
 	if (!v)
 	{
 		ft_putendl_fd(ERR_MSG, 2);
-		FTMALLOC_ASSERT(v && ERR_MSG);
 	}
 	return (v);
 }

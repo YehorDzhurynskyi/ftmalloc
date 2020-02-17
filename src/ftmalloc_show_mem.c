@@ -14,11 +14,8 @@
 
 void		ftmalloc_show_mem(void)
 {
-	if (FTMALLOC_LOCK != 0)
-	{
+	if (FTMALLOC_LOCK != 0 && !ftmalloc_validate_heap_if_enabled())
 		return ;
-	}
-	ftmalloc_call_prologue();
 	show_mem_internal(show_mem_chunk);
 	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_UNLOCK;
@@ -26,11 +23,8 @@ void		ftmalloc_show_mem(void)
 
 void		ftmalloc_show_mem_ex(void)
 {
-	if (FTMALLOC_LOCK != 0)
-	{
-		return;
-	}
-	ftmalloc_call_prologue();
+	if (FTMALLOC_LOCK != 0 && !ftmalloc_validate_heap_if_enabled())
+		return ;
 	show_mem_internal(show_mem_chunk_ex);
 	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_DEBUG_ONLY(ft_putstr("\nTotal Heap Usage:\n\t"));

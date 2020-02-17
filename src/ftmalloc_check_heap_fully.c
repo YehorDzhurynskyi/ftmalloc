@@ -91,7 +91,7 @@ static t_bool	bin_verify_contiguous_internal(t_mem_bin *bin)
 {
 	t_mem_chunk	*prev;
 	t_mem_chunk	*chunk;
-	t_mem_chunk *bottom;
+	t_mem_chunk	*bottom;
 	size_t		max_chunk_sz;
 	size_t		min_chunk_sz;
 
@@ -128,7 +128,6 @@ int				ftmalloc_check_heap_fully(void)
 	if (!v)
 	{
 		ft_putendl_fd(ERR_MSG, 2);
-		FTMALLOC_ASSERT(ERR_MSG);
 	}
 	return (v);
 }

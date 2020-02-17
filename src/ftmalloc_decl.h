@@ -28,7 +28,10 @@
 #  define FTMALLOC_LOCK slwait(&g_ftmalloc_mutex)
 #  define FTMALLOC_UNLOCK slrelease(&g_ftmalloc_mutex)
 # endif
-#endif
+# else // FTMALLOC_THREADSAFE
+#  define FTMALLOC_LOCK 0
+#  define FTMALLOC_UNLOCK 0
+#endif // FTMALLOC_THREADSAFE
 
 # ifdef FTMALLOC_DEBUG
 #  define FTMALLOC_DEBUG_ONLY(x) (x)

@@ -20,13 +20,14 @@ t_bool	ftmalloc_size_request_is_out_of_range(size_t size)
 	return (size >= (size_t)(-2 * minsize));
 }
 
-void	ftmalloc_call_prologue(void)
+t_bool	ftmalloc_validate_heap_if_enabled(void)
 {
 	if (getenv(FTMALLOC_ENV_CHECK_HEAP_FULLY))
 	{
 		if (!ftmalloc_check_heap_fully())
 		{
 			errno = ENOMEM;
+			return (FALSE);
 		}
 	}
 	else if (getenv(FTMALLOC_ENV_CHECK_HEAP_RELAXED))
@@ -34,6 +35,8 @@ void	ftmalloc_call_prologue(void)
 		if (!ftmalloc_check_heap_relaxed())
 		{
 			errno = ENOMEM;
+			return (FALSE);
 		}
 	}
+	return (TRUE);
 }

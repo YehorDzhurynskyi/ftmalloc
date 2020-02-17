@@ -124,6 +124,8 @@ add_executable(malloctest
     test/main.cpp
     test/malloc.cpp
     test/calloc.cpp
+    test/eval.cpp
+    test/error.cpp
     test/realloc.cpp
     test/mt.cpp
     test/mt_realloc.cpp

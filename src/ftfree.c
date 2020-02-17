@@ -94,11 +94,8 @@ void			ftfree_internal(void *raw)
 
 void			ftfree(void *mem)
 {
-	if (FTMALLOC_LOCK != 0)
-	{
+	if (FTMALLOC_LOCK != 0 && !ftmalloc_validate_heap_if_enabled())
 		return ;
-	}
-	ftmalloc_call_prologue();
 	ftfree_internal(mem);
 	FTMALLOC_DEBUG_ONLY(ftmalloc_check_heap_relaxed());
 	FTMALLOC_UNLOCK;
