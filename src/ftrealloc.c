@@ -12,18 +12,15 @@
 
 #include "ftmalloc_internal.h"
 
-static t_bool	try_satisfy_size(t_byte *raw, size_t size)
+static t_bool	try_satisfy_size(t_mem *mem, size_t size)
 {
-	t_mem	mem;
 	size_t	oldsize;
 
-	mem.chunk = chunk_mem2chunk(raw);
-	mem.bin = chunk_bin_of(mem.chunk, NULL);
-	bin_verify(mem.bin);
-	chunk_verify(mem.chunk);
-	FTMALLOC_ASSERT(mem.bin == chunk_bin_of_slow(mem.chunk));
-	FTMALLOC_ASSERT(chunk_in_use_get(mem.chunk));
-	oldsize = chunk_size_get(mem.chunk);
+	bin_verify(mem->bin);
+	chunk_verify(mem->chunk);
+	FTMALLOC_ASSERT(mem->bin == chunk_bin_of_slow(mem->chunk));
+	FTMALLOC_ASSERT(chunk_in_use_get(mem->chunk));
+	oldsize = chunk_size_get(mem->chunk);
 	size = FTMALLOC_MEM_ALGN_UP(size);
 	if (size == oldsize)
 	{
@@ -31,39 +28,38 @@ static t_bool	try_satisfy_size(t_byte *raw, size_t size)
 	}
 	else if (size > oldsize)
 	{
-		return (realloc_try_grow(&mem, size, oldsize));
+		return (realloc_try_grow(mem, size, oldsize));
 	}
 	else if (size < oldsize)
 	{
-		return (realloc_try_shrink(&mem, size, oldsize));
+		return (realloc_try_shrink(mem, size, oldsize));
 	}
 	FTMALLOC_ASSERT(!"Unhandled branch");
 	return (FALSE);
 }
 
-static void		*relocate(void *oldmem, const size_t size)
+static void		*relocate(t_mem *mem, const size_t size)
 {
-	void		*mem;
-	t_mem_chunk	*oldchunk;
+	void		*raw;
 	size_t		osize;
 	size_t		copiedsize;
 
-	mem = ftmalloc_internal(size);
-	if (mem != NULL)
+	raw = ftmalloc_internal(size);
+	if (raw != NULL)
 	{
-		oldchunk = chunk_mem2chunk(oldmem);
-		osize = chunk_size_get(oldchunk);
+		osize = chunk_size_get(mem->chunk);
 		copiedsize = size < osize ? size : osize;
-		ft_memcpy(mem, oldmem, copiedsize);
+		ft_memcpy(raw, chunk_chunk2mem(mem->chunk), copiedsize);
 		FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc_copied += copiedsize);
-		ftfree_internal(oldmem);
+		ftfree_internal(chunk_chunk2mem(mem->chunk));
 	}
-	return (mem);
+	return (raw);
 }
 
 void			*ftrealloc_internal(void *oldmem, const size_t size)
 {
-	void	*mem;
+	t_mem	mem;
+	void	*raw;
 
 	if (oldmem == NULL)
 		return (ftmalloc_internal(size));
@@ -72,19 +68,19 @@ void			*ftrealloc_internal(void *oldmem, const size_t size)
 		ftfree_internal(oldmem);
 		return (NULL);
 	}
-	if (!mem_inpool(oldmem))
+	if (!mem_lookup(&mem, oldmem))
 		return (NULL);
-	if (try_satisfy_size(oldmem, size))
+	if (try_satisfy_size(&mem, size))
 	{
-		mem = oldmem;
+		raw = oldmem;
 		FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_realloc_hits++);
 	}
 	else
 	{
-		mem = relocate(oldmem, size);
+		raw = relocate(&mem, size);
 	}
-	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.usage_realloc += mem ? 1 : 0);
-	return (mem);
+	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.usage_realloc += raw ? 1 : 0);
+	return (raw);
 }
 
 void			*ftrealloc(void *oldmem, size_t size)

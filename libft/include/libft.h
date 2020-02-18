@@ -106,6 +106,7 @@ void				ft_itoa_cat(char *dest, size_t size, int n);
 void				ft_putchar(char c);
 void				ft_putstr(char const *s);
 void				ft_putendl(char const *s);
+void				ft_putaddress(void *addr);
 void				ft_putnbr(int n);
 void				ft_putsize(size_t n);
 void				ft_putchar_fd(char c, int fd);

@@ -71,16 +71,14 @@ void			ftfree_internal(void *raw)
 	t_mem		mem;
 	size_t		size;
 
-	if (raw == NULL || !mem_inpool(raw))
+	if (raw == NULL || !mem_lookup(&mem, raw))
 		return ;
-	mem.chunk = chunk_mem2chunk(raw);
 	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(raw));
 	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(mem.chunk));
 	FTMALLOC_ASSERT(chunk_in_use_get(mem.chunk));
 	chunk_verify(mem.chunk);
 	mem.bin = chunk_bin_of(mem.chunk, &prev_bin);
-	if (mem.bin == NULL)
-		return ;
+	FTMALLOC_ASSERT(mem.bin);
 	bin_verify(mem.bin);
 	FTMALLOC_ASSERT(mem.bin == chunk_bin_of_slow(mem.chunk));
 	chunk_in_use_set_false(mem.chunk);

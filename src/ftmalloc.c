@@ -13,12 +13,7 @@
 #include "ftmalloc_internal.h"
 
 struct s_ftmalloc_state g_ftmalloc_state;
-
-#ifdef WIN32
-int g_ftmalloc_mutex = 0;
-#else
 pthread_mutex_t g_ftmalloc_mutex = PTHREAD_MUTEX_INITIALIZER;
-#endif
 
 static t_bool	validate_input(const size_t size)
 {
@@ -76,8 +71,6 @@ void			*ftmalloc(size_t size)
 	FTMALLOC_UNLOCK;
 	return (mem);
 }
-
-// TODO: turn on FTMALLOC_DEBUG in release
 
 #ifdef FTMALLOC_POSIX_API
 void			*malloc(size_t size)

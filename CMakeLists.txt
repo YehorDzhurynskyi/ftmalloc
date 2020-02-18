@@ -36,7 +36,7 @@ add_library(malloc STATIC
 	src/mem/mem_deallocate.c
 	src/mem/mem_find.c
 	src/mem/mem_reserve.c
-	src/mem/mem_inpool.c
+	src/mem/mem_lookup.c
 
 	src/realloc/realloc_try_grow.c
 	src/realloc/realloc_try_shrink.c
@@ -75,7 +75,6 @@ set_target_properties(malloc
 	PROPERTIES
 		LINKER_LANGUAGE "C"
 )
-
 
 if (UNIX)
 	message(STATUS "linking libft")
@@ -136,6 +135,12 @@ add_executable(malloctest
 target_include_directories(malloctest
 	PRIVATE
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
+)
+
+set_target_properties(gtest
+	PROPERTIES
+		LINKER_LANGUAGE "CXX"
+        CXX_STANDARD 17
 )
 
 target_link_libraries(malloctest PUBLIC malloc gtest)

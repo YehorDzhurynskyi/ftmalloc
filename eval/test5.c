@@ -1,4 +1,6 @@
-#include <malloc.h>
+#include <stdlib.h>
+
+void show_alloc_mem();
 
 int		main()
 {

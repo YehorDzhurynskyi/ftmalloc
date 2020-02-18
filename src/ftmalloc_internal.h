@@ -13,13 +13,9 @@
 #ifndef FTMALLOC_INTERNAL_H
 # define FTMALLOC_INTERNAL_H
 
-#ifndef WIN32
 # include "ft.h"
 # include <sys/mman.h>
 # include <unistd.h>
-#else
-# include "ftmalloc_windows_adaptor.h"
-#endif
 # include "ftmalloc.h"
 # include "ftmalloc_decl.h"
 # include <stddef.h>
@@ -58,7 +54,7 @@ void			show_mem_internal(t_show_chunk_func show_func);
 /*
 ** MEM
 */
-t_bool			mem_inpool(void *mem);
+t_bool			mem_lookup(t_mem *mem, void *raw);
 size_t			mem_reserve(t_mem *mem, const size_t size);
 size_t			mem_find(t_mem *mem, const size_t size);
 size_t			mem_allocate(t_mem *mem, const size_t size);

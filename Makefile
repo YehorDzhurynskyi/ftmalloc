@@ -5,7 +5,7 @@ LIBFT_SRC		=
 LIBFT_OBJ		=
 LIBFT_OBJ_DIR	:=	./obj/libft/
 LIBFT_INCLUDE	:=	-I$(LIBFT_DIR)include/ -I$(LIBFT_DIR)
-LIBFT_CFLAGS	:=	-c -g3 -O0 -Wall -Wextra -Werror
+LIBFT_CFLAGS	:=	-c -O3 -Wall -Wextra -Werror
 
 ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
