@@ -74,7 +74,7 @@ size_t			bin_alloc_size_of(size_t size);
 size_t			bin_max_size_of(size_t size);
 
 t_mem_chunk		*bin_adj_top(const t_mem_bin *bin);
-t_mem_chunk     *bin_adj_bottom(const t_mem_bin* bin);
+t_mem_chunk		*bin_adj_bottom(const t_mem_bin *bin);
 
 /*
 ** BUDDY

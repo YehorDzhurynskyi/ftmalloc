@@ -73,8 +73,10 @@ void			*ftmalloc(size_t size)
 }
 
 #ifdef FTMALLOC_POSIX_API
+
 void			*malloc(size_t size)
 {
 	return (ftmalloc(size));
 }
+
 #endif

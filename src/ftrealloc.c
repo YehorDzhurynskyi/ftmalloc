@@ -96,8 +96,10 @@ void			*ftrealloc(void *oldmem, size_t size)
 }
 
 #ifdef FTMALLOC_POSIX_API
+
 void			*realloc(void *oldmem, size_t size)
 {
 	return (ftrealloc(oldmem, size));
 }
+
 #endif

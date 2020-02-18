@@ -20,7 +20,8 @@ void	show_mem_chunk(t_mem_chunk *chunk)
 	ft_putstr("\n\t\tUser address: ");
 	ft_putaddress((void*)chunk_chunk2mem(chunk));
 	ft_putstr("\n\t\tSize: ");
-	ft_putnbr((chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0) + FTMALLOC_CHUNK_SZ);
+	ft_putnbr((chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0)
+	+ FTMALLOC_CHUNK_SZ);
 	ft_putstr(" Occupied(");
 	ft_putnbr((chunk_in_use_get(chunk) ? chunk_size_get(chunk) : 0));
 	ft_putstr(" User) / ");

@@ -49,12 +49,12 @@ void		ftmalloc_show_mem_ex(void)
 	FTMALLOC_UNLOCK;
 }
 
-void	show_alloc_mem()
+void		show_alloc_mem(void)
 {
 	ftmalloc_show_mem();
 }
 
-void	show_alloc_mem_ex()
+void		show_alloc_mem_ex(void)
 {
 	ftmalloc_show_mem_ex();
 }

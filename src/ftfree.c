@@ -100,8 +100,10 @@ void			ftfree(void *mem)
 }
 
 #ifdef FTMALLOC_POSIX_API
+
 void			free(void *mem)
 {
 	return (ftfree(mem));
 }
+
 #endif

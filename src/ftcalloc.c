@@ -58,8 +58,10 @@ void			*ftcalloc(size_t num, size_t size)
 }
 
 #ifdef FTMALLOC_POSIX_API
+
 void			*calloc(size_t num, size_t size)
 {
 	return (ftcalloc(num, size));
 }
+
 #endif

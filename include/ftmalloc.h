@@ -27,15 +27,15 @@ void	*ftcalloc(size_t num, size_t size);
 void	*ftrealloc(void *mem, size_t size);
 void	ftfree(void *mem);
 
-void    show_alloc_mem();
-void    show_alloc_mem_ex();
+void	show_alloc_mem(void);
+void	show_alloc_mem_ex(void);
 
 /*
 ** Debug
 */
-void	ftmalloc_show_mem();
-void	ftmalloc_show_mem_ex();
-int		ftmalloc_check_heap_relaxed();
-int		ftmalloc_check_heap_fully();
+void	ftmalloc_show_mem(void);
+void	ftmalloc_show_mem_ex(void);
+int		ftmalloc_check_heap_relaxed(void);
+int		ftmalloc_check_heap_fully(void);
 
 #endif
