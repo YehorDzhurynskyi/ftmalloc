@@ -4,7 +4,6 @@ SRC_SRC		:=	ftcalloc.c\
 				ftmalloc_check_heap_fully.c\
 				ftmalloc_check_heap_relaxed.c\
 				ftmalloc_common.c\
-				ftmalloc_posix.c\
 				ftmalloc_show_mem.c\
 				ftmalloc.c\
 				ftrealloc.c\

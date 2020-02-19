@@ -171,20 +171,6 @@ static void realloc_worker(void *p)
 
             params->cluster[i] = (char*)ftrealloc(params->cluster[i], alloc_size);
             assert(params->cluster[i] != NULL);
-
-            assert(0 == memcmp(old, params->cluster[i], alloc_size < params->size[i] ? alloc_size : params->size[i]));
-
-#if NDEBUG
-            volatile int cmpdiff = memcmp(old, params->cluster[i], alloc_size < params->size[i] ? alloc_size : params->size[i]);
-            if (cmpdiff != 0)
-            {
-                printf("cmpdiff error: %i\n", cmpdiff);
-#if WIN32
-                __debugbreak();
-#endif
-                exit(-1);
-            }
-#endif
             params->size[i] = alloc_size;
             params->reallocated[i]++;
             ++c;

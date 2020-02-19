@@ -54,8 +54,6 @@ void			*ftmalloc_internal(size_t size)
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.usage_alloc++);
 	FTMALLOC_DEBUG_ONLY(g_ftmalloc_state.total_alloc +=
 	chunk_size_get(mem.chunk));
-	if (getenv(FTMALLOC_ENV_SCRIBBLE))
-		ft_memset(chunk_chunk2mem(mem.chunk), 0xfa, chunk_size_get(mem.chunk));
 	FTMALLOC_ASSERT(FTMALLOC_ALGN_OK(chunk_chunk2mem(mem.chunk)));
 	return (chunk_chunk2mem(mem.chunk));
 }

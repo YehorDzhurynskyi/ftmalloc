@@ -135,10 +135,10 @@ TEST_F(FTMallocTest, ReallocPageSizeExceed)
 {
     void *a = ftmalloc(1);
     EXPECT_NE(a, nullptr);
-    void *b = ftmalloc(getpagesize());
+    void *b = ftmalloc(getpagesize() + 1);
     EXPECT_NE(b, nullptr);
     ftfree(a);
-    void *bb = ftrealloc(b, getpagesize() + 1);
+    void *bb = ftrealloc(b, getpagesize() + 2);
     EXPECT_EQ(bb, b);
 
     ftfree(bb);
